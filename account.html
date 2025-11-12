@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SchedulAir | Account</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="bg-gradient">
+    <nav class="navbar navbar-expand-lg navbar-dark glass-nav sticky-top shadow-lg d-none d-lg-block">
+      <div class="container py-2">
+        <a class="navbar-brand fw-bold text-uppercase tracking-wide" href="index.html">
+          <span class="brand-accent">Schedul</span>Air
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#mainNav"
+          aria-controls="mainNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainNav">
+          <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="schedule.html">Schedule Editor</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="account.html">Account</a>
+            </li>
+            <li class="nav-item ms-lg-3">
+              <a class="btn btn-gradient" href="#loginModal" data-bs-toggle="modal">Login</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main class="py-5">
+      <section class="container account-container">
+        <div class="dashboard-card weather-board shadow-xxl h-100 mb-4">
+          <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center">
+            <div>
+              <h1 class="account-page-title">Account</h1>
+              <p class="account-page-subtitle">Manage your profile and preferences</p>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+              <button type="button" class="btn btn-outline-light rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#loginModal">
+                <i class="bi bi-box-arrow-in-right me-1"></i>Login
+              </button>
+              <button type="button" class="btn btn-gradient rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                <i class="bi bi-pencil-square me-1"></i>Edit Profile
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-lg-6">
+            <div class="dashboard-card weather-board shadow-xxl h-100">
+              <div class="d-flex align-items-start gap-3 mb-4">
+                <div class="avatar-circle">
+                  <span>EK</span>
+                </div>
+                <div class="flex-grow-1">
+                  <h2 class="h4 text-white mb-1">Elliot King</h2>
+                  <p class="text-muted-80 mb-2">elliot.king@academy.edu</p>
+                  <span class="badge bg-glow">Teacher tier</span>
+                </div>
+              </div>
+              <div class="account-info-item">
+                <div class="info-label">Role</div>
+                <div class="info-value">Department Lead</div>
+              </div>
+              <div class="account-info-item">
+                <div class="info-label">Two-factor authentication</div>
+                <div class="info-value">
+                  <span class="text-success">Enabled</span>
+                  <a href="#" class="link-light text-decoration-none ms-2">Manage</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="dashboard-card weather-board shadow-xxl h-100">
+              <div class="d-flex align-items-center justify-content-between mb-4">
+                <h3 class="h5 text-white mb-0">Weather Preferences</h3>
+                <i class="bi bi-cloud-moon-fill text-accent fs-4"></i>
+              </div>
+              <div class="account-info-item">
+                <div class="info-label">Alerts</div>
+                <div class="info-value">Severe weather, rain, temperature swing</div>
+              </div>
+              <div class="account-info-item">
+                <div class="info-label">Default campus</div>
+                <div class="info-value">Northshore STEM Academy</div>
+              </div>
+              <div class="account-info-item">
+                <div class="info-label">Quiet hours</div>
+                <div class="info-value">8:00 PM – 6:30 AM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="py-4 mt-5 text-center text-muted-80 small">
+      © 2025 SchedulAir · Smart scheduling with weather intelligence
+    </footer>
+
+    <nav class="mobile-bottom-nav d-lg-none">
+      <a href="index.html" class="mobile-nav-item">
+        <i class="bi bi-house-door"></i>
+        <span>Home</span>
+      </a>
+      <a href="schedule.html" class="mobile-nav-item">
+        <i class="bi bi-calendar-event"></i>
+        <span>Schedule</span>
+      </a>
+      <a href="account.html" class="mobile-nav-item active">
+        <i class="bi bi-person-circle"></i>
+        <span>Account</span>
+      </a>
+    </nav>
+
+    <!-- Login Modal -->
+    <div
+      class="modal fade"
+      id="loginModal"
+      tabindex="-1"
+      aria-labelledby="loginModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-white border border-warning-subtle">
+          <div class="modal-header border-0">
+            <h1 class="modal-title fs-5" id="loginModalLabel">Sign in to SchedulAir</h1>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form class="row g-3">
+              <div class="col-12">
+                <label for="email" class="form-label">Email address</label>
+                <input
+                  type="email"
+                  class="form-control form-control-lg bg-dark-subtle text-white"
+                  id="email"
+                  placeholder="name@academy.edu"
+                />
+              </div>
+              <div class="col-12">
+                <label for="password" class="form-label">Password</label>
+                <div class="input-group">
+                  <input
+                    type="password"
+                    class="form-control bg-dark-subtle text-white"
+                    id="password"
+                    placeholder="••••••••"
+                  />
+                  <span class="input-group-text bg-dark-subtle text-white">
+                    <i class="bi bi-eye-slash"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="col-12 d-flex justify-content-between align-items-center">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="rememberMe" />
+                  <label class="form-check-label text-muted-80" for="rememberMe">Remember me</label>
+                </div>
+                <a href="#" class="link-light text-decoration-none small">Forgot password?</a>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer border-0 d-flex justify-content-between align-items-center">
+            <button type="button" class="btn btn-outline-light rounded-pill px-4" data-bs-dismiss="modal">
+              Cancel
+            </button>
+            <button type="button" class="btn btn-gradient rounded-pill px-4">Sign in</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div
+      class="modal fade"
+      id="editProfileModal"
+      tabindex="-1"
+      aria-labelledby="editProfileModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content bg-dark text-white border border-warning-subtle">
+          <div class="modal-header border-0">
+            <h1 class="modal-title fs-5" id="editProfileModalLabel">Edit Profile</h1>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form class="row g-3">
+              <div class="col-md-6">
+                <label for="profileName" class="form-label">Full Name</label>
+                <input type="text" class="form-control form-control-lg bg-dark-subtle text-white" id="profileName" placeholder="Elliot King" />
+              </div>
+              <div class="col-md-6">
+                <label for="profileEmail" class="form-label">Email</label>
+                <input type="email" class="form-control form-control-lg bg-dark-subtle text-white" id="profileEmail" placeholder="elliot.king@academy.edu" />
+              </div>
+              <div class="col-md-6">
+                <label for="profileRole" class="form-label">Role</label>
+                <select class="form-select bg-dark-subtle text-white" id="profileRole">
+                  <option>Teacher</option>
+                  <option selected>Department Lead</option>
+                  <option>Administrator</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label for="profileCampus" class="form-label">Default Campus</label>
+                <input type="text" class="form-control bg-dark-subtle text-white" id="profileCampus" placeholder="Northshore STEM Academy" />
+              </div>
+              <div class="col-md-6">
+                <label for="quietHoursStart" class="form-label">Quiet Hours Start</label>
+                <input type="time" class="form-control bg-dark-subtle text-white" id="quietHoursStart" />
+              </div>
+              <div class="col-md-6">
+                <label for="quietHoursEnd" class="form-label">Quiet Hours End</label>
+                <input type="time" class="form-control bg-dark-subtle text-white" id="quietHoursEnd" />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer border-0">
+            <button type="button" class="btn btn-outline-light rounded-pill px-4" data-bs-dismiss="modal">
+              Cancel
+            </button>
+            <button type="button" class="btn btn-gradient rounded-pill px-4">Save Changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
+
