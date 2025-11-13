@@ -3,6 +3,5 @@ from django.contrib.auth.decorators import login_required
 from .models import Subject, ClassSchedule
 from .forms import SubjectForm, ClassScheduleForm
 
-def add_schedule(request):
-    subjects = Subject.objects.filter(user=request.user)
-    return render(request, 'scheduler/')
+def home(request):
+    return render(request, 'home.html')

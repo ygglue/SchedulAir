@@ -13,7 +13,7 @@ class Subject(models.Model):
 class ClassSchedule(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='class_schedule')
     day_of_week = models.CharField(
-        max_length=10
+        max_length=10,
         choices=[
             ('MON', 'Monday'),
             ('TUE', 'Tuesday'),

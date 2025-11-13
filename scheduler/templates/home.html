@@ -1,0 +1,109 @@
+{% extends 'base.html' %} {% block title %}
+    Home
+{% endblock %}
+
+{% block content %}
+    <section class="container home-shell">
+        <div class="row g-4 justify-content-center">
+          <div class="col-12 col-lg-5">
+            <article class="dashboard-card class-card shadow-xxl h-100">
+              <div class="card-label">Current Class</div>
+              <div class="class-card-body">
+                <div class="class-time">
+                  <span class="class-time-label">Now</span>
+                  <span class="class-time-range">08:00 – 09:15</span>
+                </div>
+                <h1 class="class-title">Advanced Mathematics</h1>
+                <p class="class-location">
+                  <i class="bi bi-geo-alt-fill me-2"></i>Room 204 · North Pavilion
+                </p>
+                <div class="class-meta">
+                  <div class="class-meta-item">
+                    <i class="bi bi-person-fill"></i>
+                    <span>Ms. King</span>
+                  </div>
+                  <div class="class-meta-item">
+                    <i class="bi bi-card-checklist"></i>
+                    <span>Topic: Calculus Review</span>
+                  </div>
+                </div>
+              </div>
+              <div class="class-status">
+                <span class="status-indicator"></span>
+                In progress — 40 mins remaining
+              </div>
+            </article>
+          </div>
+          <div class="col-12 col-lg-7">
+            <article class="dashboard-card weather-board shadow-xxl h-100">
+              <div class="weather-main">
+                <div>
+                  <p class="weather-region text-uppercase mb-2">North America Campus</p>
+                  <div class="d-flex align-items-center gap-3">
+                    <h2 class="weather-temp mb-0">19°</h2>
+                    <div class="weather-condition">
+                      <span class="condition-label">Precipitations</span>
+                      <span class="condition-range">Max 24° · Min 18°</span>
+                    </div>
+                  </div>
+                  <p class="weather-today mb-0">Feels like 20° · Gentle breeze 12 km/h</p>
+                </div>
+                <div class="weather-illustration">
+                  <span class="weather-sun"></span>
+                  <span class="weather-cloud"></span>
+                  <span class="weather-rain rain-1"></span>
+                  <span class="weather-rain rain-2"></span>
+                  <span class="weather-rain rain-3"></span>
+                </div>
+              </div>
+              <div class="weather-forecast">
+                <h3 class="forecast-heading">Next 3 Classes</h3>
+                <div class="forecast-strip">
+                  <div class="forecast-card active">
+                    <span class="forecast-temp">19°</span>
+                    <span class="forecast-day">Mon</span>
+                    <span class="forecast-icon">
+                      <i class="bi bi-cloud-rain-heavy-fill"></i>
+                    </span>
+                    <span class="forecast-class">Robotics Lab · 15:00</span>
+                  </div>
+                  <div class="forecast-card">
+                    <span class="forecast-temp">18°</span>
+                    <span class="forecast-day">Tue</span>
+                    <span class="forecast-icon">
+                      <i class="bi bi-cloud-lightning-rain-fill"></i>
+                    </span>
+                    <span class="forecast-class">Outdoor Physics · 16:00</span>
+                  </div>
+                  <div class="forecast-card">
+                    <span class="forecast-temp">18°</span>
+                    <span class="forecast-day">Wed</span>
+                    <span class="forecast-icon">
+                      <i class="bi bi-cloud-drizzle-fill"></i>
+                    </span>
+                    <span class="forecast-class">Athletics · 17:00</span>
+                  </div>
+                </div>
+              </div>
+              <div class="weather-meta">
+                <div class="meta-card">
+                  <span class="meta-label">Air Quality</span>
+                  <span class="meta-value">3 · Low Health Risk</span>
+                  <a href="#" class="meta-link">See more</a>
+                </div>
+                <div class="meta-card">
+                  <span class="meta-label">Sunrise</span>
+                  <span class="meta-value">5:28 AM</span>
+                  <span class="meta-subtext">Sunset 7:25 PM</span>
+                </div>
+                <div class="meta-card">
+                  <span class="meta-label">UV Index</span>
+                  <span class="meta-value">4 · Moderate</span>
+                  <span class="meta-subtext">Carry sun protection</span>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+{% endblock %}
