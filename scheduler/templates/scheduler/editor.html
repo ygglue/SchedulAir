@@ -87,56 +87,59 @@ Schedule Editor
         <div class="modal-section-divider">
           <h2 class="modal-title-custom modal-section-title mb-3">Add Subject</h2>
           <form class="row g-3" id="addSubjectForm">
+            {% csrf_token %}
             <div class="col-md-8 d-flex flex-column">
               <div class="mb-3">
                 <label for="subjectName" class="modal-label">Subject Name</label>
-                <input type="text" class="form-control" id="subjectName" placeholder="e.g. Computer Science" />
+                <input type="text" class="form-control" id="subjectName" name="subjectName" placeholder="e.g. Computer Science" required/>
               </div>
               <div>
                 <label for="instructor" class="modal-label">Instructor</label>
-                <input type="text" class="form-control" id="instructor" placeholder="Name" />
+                <input type="text" class="form-control" id="instructor" name="instructor" placeholder="Name" required/>
               </div>
             </div>
             <div class="col-md-4 d-flex align-items-end">
-              <button type="button" class="btn btn-gradient rounded-pill px-4 w-100 mb-0">Add Subject</button>
+              <button type="submit" class="btn btn-gradient rounded-pill px-4 w-100 mb-0" name="addSub">Add Subject</button>
             </div>
           </form>
+          <div style="color: white;" id="formMessage"></div>
         </div>
         
         <!-- Add Class Section -->
         <h2 class="modal-title-custom modal-section-title mb-3">Add Class</h2>
         <form class="row g-3" id="addClassForm">
+          {% csrf_token %}
           <div class="col-md-6">
             <label for="subjectSelect" class="modal-label">Subject</label>
+            <select class="form-select" id="subjectSelect" name="subjectSelect" required>
             {% if subjects %}
-              <select class="form-select" id="subjectSelect">
-                <option selected>Choose...</option>
-                {% for subject in subjects %}
-                  <option>{{subject.name}}</option>
-                {% endfor %}
-              </select>
+              <option id="choose-option" selected>Choose...</option>
+              {% for subject in subjects %}
+                <option value="{{subject.id}}">{{subject.name}}</option>
+              {% endfor %}
             {% else %}
-              <div class="modal-empty-message">No subjects available</div>
+              <option class="modal-empty-message" id="empty-message">No Subjects added yet...</option>
             {% endif %}
+            </select>
           </div>
           <div class="col-md-6">
             <label for="classDay" class="modal-label">Day</label>
-            <select class="form-select" id="classDay">
-              <option selected>Choose...</option>
-              <option>Monday</option>
-              <option>Tuesday</option>
-              <option>Wednesday</option>
-              <option>Thursday</option>
-              <option>Friday</option>
+            <select class="form-select" id="classDay" name="classDay" required>
+              <option value="" selected>Choose...</option>
+              <option value="MON">Monday</option>
+              <option value="TUE">Tuesday</option>
+              <option value="WED">Wednesday</option>
+              <option value="THU">Thursday</option>
+              <option value="FRI">Friday</option>
             </select>
           </div>
           <div class="col-md-6">
             <label for="startTime" class="modal-label">Start Time</label>
-            <input type="time" class="form-control" id="startTime" />
+            <input type="time" class="form-control" id="startTime" name="startTime" required/>
           </div>
           <div class="col-md-6">
             <label for="endTime" class="modal-label">End Time</label>
-            <input type="time" class="form-control" id="endTime" />
+            <input type="time" class="form-control" id="endTime" name="endTime" required/>
           </div>
         </form>
       </div>
@@ -144,7 +147,7 @@ Schedule Editor
         <button type="button" class="btn btn-outline-light rounded-pill px-4" data-bs-dismiss="modal">
           Cancel
         </button>
-        <button type="button" class="btn btn-gradient rounded-pill px-4">Add Class</button>
+        <button type="submit" form="addClassForm" class="btn btn-gradient rounded-pill px-4">Add Class</button>
       </div>
     </div>
   </div>

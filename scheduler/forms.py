@@ -6,10 +6,6 @@ class SubjectForm(forms.ModelForm):
     class Meta:
         model = Subject
         fields = ['name', 'teacher']
-        widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g. Math'}),
-            'teacher' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Ma'am Tine"}),
-        }
 
 
 class ClassScheduleForm(forms.ModelForm):
