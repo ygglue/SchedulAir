@@ -3,5 +3,10 @@ from django.contrib.auth.decorators import login_required
 from .models import Subject, ClassSchedule
 from .forms import SubjectForm, ClassScheduleForm
 
-def home(request):
-    return render(request, 'home.html')
+def home(response):
+    return render(response, 'scheduler/home.html', {})
+
+def editor(response):
+
+    subjects = Subject.objects.all()
+    return render(response, 'scheduler/editor.html', {'subjects': subjects})
