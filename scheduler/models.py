@@ -26,7 +26,6 @@ class ClassSchedule(models.Model):
     )
     start_time = models.TimeField()
     end_time = models.TimeField()
-    room = models.CharField(max_length=50, blank=True)
 
     def __str__(self):
         return f"{self.subject.name} - {self.day_of_week} ({self.start_time}-{self.end_time})"

@@ -9,7 +9,7 @@ Schedule Editor
     <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center">
       <div>
         <h1 class="schedule-page-title">Class Schedule</h1>
-        <p class="schedule-page-date">Wednesday, November 12</p>
+        <p class="schedule-page-date">{{current_date}}</p>
       </div>
       <div class="d-flex flex-wrap gap-2">
         <button type="button" class="btn btn-outline-light rounded-pill px-3" data-bs-toggle="modal"
@@ -24,52 +24,105 @@ Schedule Editor
 
   <div class="dashboard-card weather-board shadow-xxl h-100">
     <div class="week-days-header d-none d-lg-grid">
-      <div class="week-day-header">Mon</div>
-      <div class="week-day-header">Tue</div>
-      <div class="week-day-header active">Wed</div>
-      <div class="week-day-header">Thu</div>
-      <div class="week-day-header">Fri</div>
+      {% for day in days_of_week %}
+        {% if day == current_day_abbr %}
+          <div class="week-day-header active">{{day}}</div>
+        {% else %}
+          <div class="week-day-header">{{day}}</div>
+        {% endif %}
+      {% endfor %}
     </div>
     <div class="week-schedule-grid">
       <div class="day-column">
+        <div class="week-day-header d-lg-none mb-3">Sun</div>
+        {% if sun_classes %}
+          {% for class in sun_classes %}
+            <div class="class-block block-purple" data-duration="2h">
+              <div class="class-time">{{ class.start_time|time:"g:i A" }} - {{ class.end_time|time:"g:i A" }}</div>
+              <div class="class-name">{{ class.subject.name }}</div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="class-empty">No classes</div>
+        {% endif %}
+      </div>
+      <div class="day-column">
         <div class="week-day-header d-lg-none mb-3">Mon</div>
-        <div class="class-block block-yellow" data-duration="2h">
-          <div class="class-time">7:30 AM - 9:30 AM</div>
-          <div class="class-name">CS ELECTIVE</div>
-        </div>
-        <div class="class-block block-pink" data-duration="1h">
-          <div class="class-time">9:30 AM</div>
-          <div class="class-name">ADVANCED DATABASE</div>
-        </div>
+        {% if mon_classes %}
+          {% for class in mon_classes %}
+            <div class="class-block block-purple" data-duration="2h">
+              <div class="class-time">{{ class.start_time|time:"g:i A" }} - {{ class.end_time|time:"g:i A" }}</div>
+              <div class="class-name">{{ class.subject.name }}</div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="class-empty">No classes</div>
+        {% endif %}
       </div>
       <div class="day-column">
         <div class="week-day-header d-lg-none mb-3">Tue</div>
-        <div class="class-block block-purple" data-duration="2h">
-          <div class="class-time">7:30 AM - 9:30 AM</div>
-          <div class="class-name">APPLICATION DEVELOPMENT AND EMERGING TECHNOLOGIES 1</div>
-        </div>
-        <div class="class-block block-pink" data-duration="1h">
-          <div class="class-time">9:30 AM</div>
-          <div class="class-name">ADVANCED DATABASE SYSTEMS</div>
-        </div>
+        {% if tue_classes %}
+          {% for class in tue_classes %}
+            <div class="class-block block-purple" data-duration="2h">
+              <div class="class-time">{{ class.start_time|time:"g:i A" }} - {{ class.end_time|time:"g:i A" }}</div>
+              <div class="class-name">{{ class.subject.name }}</div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="class-empty">No classes</div>
+        {% endif %}
       </div>
       <div class="day-column">
         <div class="week-day-header d-lg-none mb-3 active">Wed</div>
-        <div class="class-block block-pink" data-duration="1h">
-          <div class="class-time">9:00 AM</div>
-          <div class="class-name">ADVANCED DATABASE SYSTEMS</div>
-        </div>
+        {% if wed_classes %}
+          {% for class in wed_classes %}
+            <div class="class-block block-purple" data-duration="2h">
+              <div class="class-time">{{ class.start_time|time:"g:i A" }} - {{ class.end_time|time:"g:i A" }}</div>
+              <div class="class-name">{{ class.subject.name }}</div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="class-empty">No classes</div>
+        {% endif %}
       </div>
       <div class="day-column">
         <div class="week-day-header d-lg-none mb-3">Thu</div>
-        <div class="class-block block-purple" data-duration="3h">
-          <div class="class-time">7:30 AM - 10:30 AM</div>
-          <div class="class-name">APPLICATION DEVELOPMENT AND EMERGING TECHNOLOGIES 1</div>
-        </div>
+        {% if thu_classes %}
+          {% for class in thu_classes %}
+            <div class="class-block block-purple" data-duration="2h">
+              <div class="class-time">{{ class.start_time|time:"g:i A" }} - {{ class.end_time|time:"g:i A" }}</div>
+              <div class="class-name">{{ class.subject.name }}</div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="class-empty">No classes</div>
+        {% endif %}
       </div>
       <div class="day-column">
         <div class="week-day-header d-lg-none mb-3">Fri</div>
-        <div class="class-empty">No classes</div>
+        {% if fri_classes %}
+          {% for class in fri_classes %}
+            <div class="class-block block-purple" data-duration="2h">
+              <div class="class-time">{{ class.start_time|time:"g:i A" }} - {{ class.end_time|time:"g:i A" }}</div>
+              <div class="class-name">{{ class.subject.name }}</div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="class-empty">No classes</div>
+        {% endif %}
+      </div>
+      <div class="day-column">
+        <div class="week-day-header d-lg-none mb-3">Sat</div>
+        {% if sat_classes %}
+          {% for class in sat_classes %}
+            <div class="class-block block-purple" data-duration="2h">
+              <div class="class-time">{{ class.start_time|time:"g:i A" }} - {{ class.end_time|time:"g:i A" }}</div>
+              <div class="class-name">{{ class.subject.name }}</div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="class-empty">No classes</div>
+        {% endif %}
       </div>
     </div>
   </div>
@@ -107,7 +160,7 @@ Schedule Editor
         
         <!-- Add Class Section -->
         <h2 class="modal-title-custom modal-section-title mb-3">Add Class</h2>
-        <form class="row g-3" id="addClassForm">
+        <form class="row g-3" id="addClassForm" method="POST">
           {% csrf_token %}
           <div class="col-md-6">
             <label for="subjectSelect" class="modal-label">Subject</label>
@@ -126,11 +179,13 @@ Schedule Editor
             <label for="classDay" class="modal-label">Day</label>
             <select class="form-select" id="classDay" name="classDay" required>
               <option value="" selected>Choose...</option>
+              <option value="SUN">Sunday</option>
               <option value="MON">Monday</option>
               <option value="TUE">Tuesday</option>
               <option value="WED">Wednesday</option>
               <option value="THU">Thursday</option>
               <option value="FRI">Friday</option>
+              <option value="SAT">Saturday</option>
             </select>
           </div>
           <div class="col-md-6">
