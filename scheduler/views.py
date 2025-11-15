@@ -6,12 +6,18 @@ from django.contrib.auth.decorators import login_required
 from .models import Subject, ClassSchedule
 from .forms import SubjectForm, ClassScheduleForm
 
+@login_required
 def home(request):
     return render(request, 'scheduler/home.html', {})
 
+def landing(request):
+    return render(request, 'scheduler/landing.html', {})
+
+@login_required
 def account(request):
     return render(request, 'scheduler/account.html', {}) 
 
+@login_required
 def editor(request):
     if request.method == 'POST':
         if request.headers.get('x-requested-with') == 'XMLHttpRequest' and 'instructor' in request.POST:

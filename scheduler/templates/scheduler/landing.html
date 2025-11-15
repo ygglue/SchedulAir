@@ -1,0 +1,294 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SchedulAir - Smart Scheduling with Weather Intelligence</title>
+    <link
+      href="{% static 'css/bootstrap.min.css' %}"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+        position: relative;
+        overflow: hidden;
+      }
+      .landing-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 2rem;
+        position: relative;
+        z-index: 1;
+      }
+      
+      /* Background Weather Graphics */
+      .bg-weather {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+        overflow: hidden;
+      }
+      
+      /* Clouds */
+      .bg-cloud {
+        position: absolute;
+        border-radius: 50px;
+        background: linear-gradient(160deg, rgba(255, 255, 255, 0.15), rgba(199, 211, 238, 0.1));
+        box-shadow: 0 8px 20px rgba(24, 33, 68, 0.2);
+        opacity: 0.6;
+      }
+      
+      .cloud-1 {
+        width: 120px;
+        height: 60px;
+        top: 15%;
+        left: 10%;
+        animation: float-cloud 20s infinite ease-in-out;
+      }
+      
+      .cloud-2 {
+        width: 150px;
+        height: 75px;
+        top: 25%;
+        right: 15%;
+        animation: float-cloud 25s infinite ease-in-out 2s;
+      }
+      
+      .cloud-3 {
+        width: 100px;
+        height: 50px;
+        bottom: 30%;
+        left: 20%;
+        animation: float-cloud 18s infinite ease-in-out 4s;
+      }
+      
+      .cloud-4 {
+        width: 140px;
+        height: 70px;
+        bottom: 20%;
+        right: 10%;
+        animation: float-cloud 22s infinite ease-in-out 1s;
+      }
+      
+      .cloud-5 {
+        width: 110px;
+        height: 55px;
+        top: 50%;
+        left: 5%;
+        animation: float-cloud 24s infinite ease-in-out 3s;
+      }
+      
+      @keyframes float-cloud {
+        0%, 100% {
+          transform: translateX(0) translateY(0);
+        }
+        25% {
+          transform: translateX(30px) translateY(-20px);
+        }
+        50% {
+          transform: translateX(-20px) translateY(15px);
+        }
+        75% {
+          transform: translateX(25px) translateY(-10px);
+        }
+      }
+      
+      /* Rain Drops */
+      .bg-rain {
+        position: absolute;
+        width: 3px;
+        height: 20px;
+        background: linear-gradient(180deg, rgba(116, 249, 255, 0.6), rgba(74, 242, 255, 0.4));
+        border-radius: 2px;
+        box-shadow: 0 0 8px rgba(74, 242, 255, 0.4);
+      }
+      
+      .rain-drop-1 {
+        left: 15%;
+        top: -20px;
+        animation: fall-rain 2s infinite linear;
+      }
+      
+      .rain-drop-2 {
+        left: 25%;
+        top: -20px;
+        animation: fall-rain 2.2s infinite linear 0.3s;
+      }
+      
+      .rain-drop-3 {
+        left: 35%;
+        top: -20px;
+        animation: fall-rain 1.8s infinite linear 0.6s;
+      }
+      
+      .rain-drop-4 {
+        left: 45%;
+        top: -20px;
+        animation: fall-rain 2.1s infinite linear 0.2s;
+      }
+      
+      .rain-drop-5 {
+        left: 55%;
+        top: -20px;
+        animation: fall-rain 2.3s infinite linear 0.5s;
+      }
+      
+      .rain-drop-6 {
+        left: 65%;
+        top: -20px;
+        animation: fall-rain 1.9s infinite linear 0.4s;
+      }
+      
+      .rain-drop-7 {
+        left: 75%;
+        top: -20px;
+        animation: fall-rain 2.4s infinite linear 0.7s;
+      }
+      
+      .rain-drop-8 {
+        left: 85%;
+        top: -20px;
+        animation: fall-rain 2s infinite linear 0.1s;
+      }
+      
+      @keyframes fall-rain {
+        0% {
+          transform: translateY(0);
+          opacity: 0.8;
+        }
+        100% {
+          transform: translateY(calc(100vh + 20px));
+          opacity: 0;
+        }
+      }
+      
+      /* Wind Lines */
+      .bg-wind {
+        position: absolute;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        border-radius: 2px;
+      }
+      
+      .wind-1 {
+        width: 80px;
+        top: 20%;
+        left: -80px;
+        animation: blow-wind 8s infinite linear;
+      }
+      
+      .wind-2 {
+        width: 100px;
+        top: 40%;
+        left: -100px;
+        animation: blow-wind 10s infinite linear 2s;
+      }
+      
+      .wind-3 {
+        width: 70px;
+        top: 60%;
+        left: -70px;
+        animation: blow-wind 9s infinite linear 1s;
+      }
+      
+      .wind-4 {
+        width: 90px;
+        top: 80%;
+        left: -90px;
+        animation: blow-wind 11s infinite linear 3s;
+      }
+      
+      @keyframes blow-wind {
+        0% {
+          left: -100px;
+          opacity: 0;
+        }
+        10% {
+          opacity: 0.4;
+        }
+        90% {
+          opacity: 0.4;
+        }
+        100% {
+          left: 100%;
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-gradient">
+    <!-- Animated Background Weather Graphics -->
+    <div class="bg-weather">
+      <!-- Clouds -->
+      <div class="bg-cloud cloud-1"></div>
+      <div class="bg-cloud cloud-2"></div>
+      <div class="bg-cloud cloud-3"></div>
+      <div class="bg-cloud cloud-4"></div>
+      <div class="bg-cloud cloud-5"></div>
+      
+      <!-- Rain Drops -->
+      <div class="bg-rain rain-drop-1"></div>
+      <div class="bg-rain rain-drop-2"></div>
+      <div class="bg-rain rain-drop-3"></div>
+      <div class="bg-rain rain-drop-4"></div>
+      <div class="bg-rain rain-drop-5"></div>
+      <div class="bg-rain rain-drop-6"></div>
+      <div class="bg-rain rain-drop-7"></div>
+      <div class="bg-rain rain-drop-8"></div>
+      
+      <!-- Wind Lines -->
+      <div class="bg-wind wind-1"></div>
+      <div class="bg-wind wind-2"></div>
+      <div class="bg-wind wind-3"></div>
+      <div class="bg-wind wind-4"></div>
+    </div>
+    
+    <div class="landing-container">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-8 text-center">
+            <h1 class="display-2 fw-bold text-white mb-4" style="font-family: 'Space Grotesk', serif; line-height: 1.2;">
+              <span class="brand-accent">Schedul</span>Air
+            </h1>
+            <p class="lead text-white mb-5" style="font-size: 1.25rem; color: rgba(255, 255, 255, 0.9); line-height: 1.6; max-width: 700px; margin: 0 auto;">
+              A smart scheduling app that integrates school timetables with real-time weather data. It helps students and teachers plan their days more effectively, from knowing when to bring an umbrella to optimizing outdoor classes.
+            </p>
+            <div class="d-flex flex-wrap gap-3 justify-content-center">
+              <a href="{% url 'account' %}" class="btn btn-gradient rounded-pill px-5 py-3" style="font-size: 1.1rem; font-weight: 600;">
+                <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+              </a>
+              <a href="{% url 'account' %}" class="btn btn-outline-light rounded-pill px-5 py-3" style="font-size: 1.1rem; font-weight: 600; border-color: rgba(225, 117, 100, 0.5); color: rgba(255, 255, 255, 0.9);">
+                <i class="bi bi-person-plus-fill me-2"></i>Sign Up
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/scripts.js' %}"></script>
+  </body>
+</html>

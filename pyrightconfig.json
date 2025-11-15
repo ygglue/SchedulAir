@@ -1,0 +1,6 @@
+
+{
+  "typeCheckingMode": "off",
+  "reportOptionalMemberAccess": false,
+  "extraPaths": ["./", "./your_app_name"]
+}
