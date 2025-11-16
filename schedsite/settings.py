@@ -31,12 +31,12 @@ SECRET_KEY = 'django-insecure-x6s%#_b_a@yt)bmg#-$%-ihp1)x=@7z$ays!ffeegex@ma8k%n
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['schedulair.pythonanywhere.com', '127.0.0.1', 'schedulair.onrender.com']
+ALLOWED_HOSTS = ['schedulair.pythonanywhere.com', '127.0.0.1']
 
 if "pythonanywhere" in socket.gethostname():
-    SITE_ID = 4 # production site
+    SITE_ID = 6 # production site
 else:
-    SITE_ID = 5 # local site
+    SITE_ID = 7 # local site
 
 AUTHENTICATION_BACKENDS=[
     'django.contrib.auth.backends.ModelBackend',
@@ -70,7 +70,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'schedsite.urls'
@@ -97,7 +96,10 @@ WSGI_APPLICATION = 'schedsite.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default':  dj_database_url.config(default=env('DATABASE_URL'), conn_max_age=0, ssl_require=True)
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',  # SQLite3 backend
+        'NAME': BASE_DIR / 'db.sqlite3',         # Path to database file
+    }
 }
 
 
