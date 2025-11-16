@@ -49,4 +49,92 @@ document.addEventListener('DOMContentLoaded', () => {
                 message.textContent = '';
         }, 10000);
     });
+
+    // Handle class-block clicks to populate edit modal
+    const editModal = document.getElementById('editModal');
+    if (editModal) {
+        editModal.addEventListener('show.bs.modal', async function (event) {
+            // Get the button that triggered the modal
+            const button = event.relatedTarget;
+            
+            // Check if it's a class-block with data-class-id
+            const classId = button ? button.getAttribute('data-class-id') : null;
+            
+            if (classId) {
+                // Fetch class data
+                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                try {
+                    const response = await fetch(`?getClass=1&editClassId=${classId}`, {
+                        method: 'GET',
+                        headers: {
+                            'X-CSRFToken': csrfToken,
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        const classData = data.class;
+                        
+                        // Populate the edit form
+                        document.getElementById('editClassId').value = classData.id;
+                        document.getElementById('editSubjectSelect').value = classData.subject_id;
+                        document.getElementById('editClassDay').value = classData.day_of_week;
+                        document.getElementById('editStartTime').value = classData.start_time;
+                        document.getElementById('editEndTime').value = classData.end_time;
+                    } else {
+                        console.error('Error fetching class data:', data.error);
+                    }
+                } catch (error) {
+                    console.error('Error fetching class data:', error);
+                }
+            } else {
+                document.getElementById('editClassId').value = '';
+                document.getElementById('editSubjectSelect').selectedIndex = 0;
+                document.getElementById('editClassDay').selectedIndex = 0;
+                document.getElementById('editStartTime').value = '';
+                document.getElementById('editEndTime').value = '';
+            }
+        });
+    }
+
+    // Handle edit class form submission via AJAX
+    const editClassForm = document.getElementById('editClassForm');
+    if (editClassForm) {
+        editClassForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(editClassForm);
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            try {
+                const response = await fetch("", {
+                    method: "POST",
+                    headers: {
+                        'X-CSRFToken': csrfToken,
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Close the modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('editModal'));
+                    if (modal) {
+                        modal.hide();
+                    }
+                    // Reload the page to show updated data
+                    window.location.reload();
+                } else {
+                    alert('Error: ' + (data.error || 'Failed to update class'));
+                }
+            } catch (error) {
+                console.error('Error updating class:', error);
+                alert('An error occurred while updating the class.');
+            }
+        });
+    }
 });

@@ -22,6 +22,24 @@ def login_view(request):
 
 @login_required
 def editor(request):
+    # Handle GET request for fetching class details
+    if request.method == 'GET' and request.headers.get('x-requested-with') == 'XMLHttpRequest' and 'getClass' in request.GET:
+        class_id = request.GET.get('editClassId')
+        try:
+            class_schedule = ClassSchedule.objects.get(id=class_id, subject__user=request.user)
+            return JsonResponse({
+                'success': True,
+                'class': {
+                    'id': class_schedule.id,
+                    'subject_id': class_schedule.subject.id,
+                    'day_of_week': class_schedule.day_of_week,
+                    'start_time': class_schedule.start_time.strftime('%H:%M'),
+                    'end_time': class_schedule.end_time.strftime('%H:%M')
+                }
+            })
+        except ClassSchedule.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Class not found.'})
+    
     if request.method == 'POST':
         if request.headers.get('x-requested-with') == 'XMLHttpRequest' and 'instructor' in request.POST:
             name = request.POST.get('subjectName')
@@ -38,6 +56,7 @@ def editor(request):
                 })
             else:
                 return JsonResponse({'success': False, 'error': 'All fields are required.'})
+
         elif 'subjectSelect' in request.POST:
             subject_id = request.POST.get('subjectSelect')
             if not subject_id:
@@ -62,6 +81,26 @@ def editor(request):
 
             messages.success(request, "Added successfully.")
             return redirect('editor')
+        elif 'editSubjectSelect' in request.POST:
+            class_id = request.POST.get('editClassId')
+            if not class_id:
+                return JsonResponse({'success': False, 'error': 'Class ID is required.'})
+            try:
+                edit_class = ClassSchedule.objects.get(id=class_id, subject__user=request.user)
+                subject_id = request.POST.get('editSubjectSelect')
+                try:
+                    subject = Subject.objects.get(id=subject_id, user=request.user)
+                    edit_class.subject = subject
+                except Subject.DoesNotExist:
+                    return JsonResponse({'success': False, 'error': 'Invalid subject selected.'})
+                edit_class.day_of_week = request.POST.get('editClassDay')
+                edit_class.start_time = request.POST.get('editStartTime')
+                edit_class.end_time = request.POST.get('editEndTime')
+                edit_class.save()
+                return JsonResponse({'success': True, 'message': 'Class updated successfully.'})
+                
+            except ClassSchedule.DoesNotExist:
+                return JsonResponse({'success': False, 'error': 'Class not found.'})
         
     
     current_date = datetime.now().strftime("%A, %B %d")
