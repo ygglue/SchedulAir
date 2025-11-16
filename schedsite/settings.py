@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-x6s%#_b_a@yt)bmg#-$%-ihp1)x=@7z$ays!ffeegex@ma8k%n
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['schedulair.pythonanywhere.com', '127.0.0.1']
 
 SITE_ID = 2
 
