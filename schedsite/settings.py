@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os, environ
 import dj_database_url
+import socket
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -32,7 +33,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['schedulair.pythonanywhere.com', '127.0.0.1']
 
-SITE_ID = 2
+if "pythonanywhere" in socket.gethostname():
+    SITE_ID = 4 # production site (psusphere.pythonanywhere.com)
+else:
+    SITE_ID = 3 # local site (127.0.0.1:8000)
 
 AUTHENTICATION_BACKENDS=[
     'django.contrib.auth.backends.ModelBackend',
@@ -73,7 +77,7 @@ ROOT_URLCONF = 'schedsite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -137,7 +141,7 @@ STATICFILES_DIRS = (
 )
 
 LOGIN_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = 'home/'
+LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 ACCOUNT_LOGOUT_REDIRECT_URL = '/'
@@ -145,12 +149,7 @@ ACCOUNT_LOGOUT_ON_GET = True
 
 ACCOUNT_LOGIN_METHODS = {'username', 'email'}
 
-ACCOUNT_SIGNUP_FIELDS = [
-    'username',
-    'email',
-    'password1',
-    'password2'
-]
+ACCOUNT_SIGNUP_FIELDS = ['username*', 'email*', 'password1*', 'password2*']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
