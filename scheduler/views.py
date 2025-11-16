@@ -17,6 +17,9 @@ def landing(request):
 def account(request):
     return render(request, 'scheduler/account.html', {}) 
 
+def login_view(request):
+    return render(request, 'scheduler/login.html', {})
+
 @login_required
 def editor(request):
     if request.method == 'POST':

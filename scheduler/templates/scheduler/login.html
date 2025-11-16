@@ -1,0 +1,220 @@
+{% extends 'scheduler/landing.html' %}
+{% load static %}
+
+{% block title %}Login - SchedulAir{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <div class="dashboard-card shadow-xxl">
+        <!-- Toggle Buttons -->
+        <div class="d-flex gap-2 mb-4 justify-content-center">
+          <button 
+            id="loginTab" 
+            class="btn btn-gradient rounded-pill px-4 py-2 active" 
+            onclick="showLogin()"
+            style="font-weight: 600;"
+          >
+            <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+          </button>
+          <button 
+            id="signupTab" 
+            class="btn btn-outline-light rounded-pill px-4 py-2" 
+            onclick="showSignup()"
+            style="font-weight: 600; border-color: rgba(225, 117, 100, 0.5); color: rgba(255, 255, 255, 0.9);"
+          >
+            <i class="bi bi-person-plus-fill me-2"></i>Sign Up
+          </button>
+        </div>
+
+        <!-- Login Form -->
+        <div id="loginForm" class="auth-form">
+          <h2 class="h3 text-white mb-4 text-center" style="font-family: 'Space Grotesk', serif;">
+            Welcome Back
+          </h2>
+          <form class="row g-3">
+            <div class="col-12">
+              <label for="loginEmail" class="modal-label">Email address</label>
+              <input 
+                type="email" 
+                class="form-control form-control-lg" 
+                id="loginEmail" 
+                placeholder="name@academy.edu" 
+                required
+              />
+            </div>
+            <div class="col-12">
+              <label for="loginPassword" class="modal-label">Password</label>
+              <div class="input-group">
+                <input 
+                  type="password" 
+                  class="form-control" 
+                  id="loginPassword" 
+                  placeholder="••••••••" 
+                  required
+                />
+                <button 
+                  type="button" 
+                  class="input-group-text" 
+                  onclick="togglePassword('loginPassword', 'loginPasswordToggle')"
+                  id="loginPasswordToggle"
+                >
+                  <i class="bi bi-eye-slash"></i>
+                </button>
+              </div>
+            </div>
+            <div class="col-12 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+              <div class="form-check mb-2 mb-md-0">
+                <input class="form-check-input" type="checkbox" id="rememberMe" />
+                <label class="form-check-label text-muted-80" for="rememberMe">Remember me</label>
+              </div>
+              <a href="#" class="link-light text-decoration-none small">Forgot password?</a>
+            </div>
+            <div class="col-12 mt-3">
+              <button type="submit" class="btn btn-gradient rounded-pill w-100 py-2" style="font-weight: 600;">
+                Sign In
+              </button>
+            </div>
+            <div class="col-12">
+              <div class="d-flex align-items-center my-3">
+                <hr class="flex-grow-1" style="border-color: rgba(255, 255, 255, 0.2); margin: 0;">
+                <span class="mx-3 text-muted-80 small">OR</span>
+                <hr class="flex-grow-1" style="border-color: rgba(255, 255, 255, 0.2); margin: 0;">
+              </div>
+            </div>
+            <div class="col-12">
+              <button type="button" class="btn btn-outline-light rounded-pill w-100 py-2" style="font-weight: 600; border-color: rgba(255, 255, 255, 0.3); color: rgba(255, 255, 255, 0.9);">
+                <i class="bi bi-google me-2"></i>Sign in with Google
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Signup Form -->
+        <div id="signupForm" class="auth-form" style="display: none;">
+          <h2 class="h3 text-white mb-4 text-center" style="font-family: 'Space Grotesk', serif;">
+            Create Account
+          </h2>
+          <form class="row g-3">
+            <div class="col-12">
+              <label for="signupName" class="modal-label">Full Name</label>
+              <input 
+                type="text" 
+                class="form-control form-control-lg" 
+                id="signupName" 
+                placeholder="John Doe" 
+                required
+              />
+            </div>
+            <div class="col-12">
+              <label for="signupEmail" class="modal-label">Email address</label>
+              <input 
+                type="email" 
+                class="form-control form-control-lg" 
+                id="signupEmail" 
+                placeholder="name@academy.edu" 
+                required
+              />
+            </div>
+            <div class="col-12">
+              <label for="signupPassword" class="modal-label">Password</label>
+              <div class="input-group">
+                <input 
+                  type="password" 
+                  class="form-control" 
+                  id="signupPassword" 
+                  placeholder="••••••••" 
+                  required
+                />
+                <button 
+                  type="button" 
+                  class="input-group-text" 
+                  onclick="togglePassword('signupPassword', 'signupPasswordToggle')"
+                  id="signupPasswordToggle"
+                >
+                  <i class="bi bi-eye-slash"></i>
+                </button>
+              </div>
+            </div>
+            <div class="col-12">
+              <label for="signupConfirmPassword" class="modal-label">Confirm Password</label>
+              <div class="input-group">
+                <input 
+                  type="password" 
+                  class="form-control" 
+                  id="signupConfirmPassword" 
+                  placeholder="••••••••" 
+                  required
+                />
+                <button 
+                  type="button" 
+                  class="input-group-text" 
+                  onclick="togglePassword('signupConfirmPassword', 'signupConfirmPasswordToggle')"
+                  id="signupConfirmPasswordToggle"
+                >
+                  <i class="bi bi-eye-slash"></i>
+                </button>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="agreeTerms" required />
+                <label class="form-check-label text-muted-80" for="agreeTerms" style="font-size: 0.9rem; line-height: 1.5;">
+                  I agree to the <a href="#" class="link-light">Terms of Service</a> and <a href="#" class="link-light">Privacy Policy</a>
+                </label>
+              </div>
+            </div>
+            <div class="col-12 mt-3">
+              <button type="submit" class="btn btn-gradient rounded-pill w-100 py-2" style="font-weight: 600;">
+                Create Account
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  function showLogin() {
+    document.getElementById('loginForm').style.display = 'block';
+    document.getElementById('signupForm').style.display = 'none';
+    document.getElementById('loginTab').classList.add('active');
+    document.getElementById('loginTab').classList.remove('btn-outline-light');
+    document.getElementById('loginTab').classList.add('btn-gradient');
+    document.getElementById('signupTab').classList.remove('active', 'btn-gradient');
+    document.getElementById('signupTab').classList.add('btn-outline-light');
+  }
+
+  function showSignup() {
+    document.getElementById('signupForm').style.display = 'block';
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('signupTab').classList.add('active');
+    document.getElementById('signupTab').classList.remove('btn-outline-light');
+    document.getElementById('signupTab').classList.add('btn-gradient');
+    document.getElementById('loginTab').classList.remove('active', 'btn-gradient');
+    document.getElementById('loginTab').classList.add('btn-outline-light');
+  }
+
+  function togglePassword(inputId, toggleId) {
+    const input = document.getElementById(inputId);
+    const toggle = document.getElementById(toggleId);
+    const icon = toggle.querySelector('i');
+    
+    if (input.type === 'password') {
+      input.type = 'text';
+      icon.classList.remove('bi-eye-slash');
+      icon.classList.add('bi-eye');
+    } else {
+      input.type = 'password';
+      icon.classList.remove('bi-eye');
+      icon.classList.add('bi-eye-slash');
+    }
+  }
+</script>
+{% endblock %}
+
