@@ -11,11 +11,15 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-import os
+import os, environ
+import dj_database_url
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = environ.Env()
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -28,6 +32,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SITE_ID = 2
+
+AUTHENTICATION_BACKENDS=[
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
 
 # Application definition
 
@@ -38,6 +49,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     'scheduler'
 ]
 
@@ -49,6 +65,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware'
 ]
 
 ROOT_URLCONF = 'schedsite.urls'
@@ -75,10 +92,7 @@ WSGI_APPLICATION = 'schedsite.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default':  dj_database_url.config(default=env('DATABASE_URL'), conn_max_age=600, ssl_require=True)
 }
 
 
@@ -122,8 +136,21 @@ STATICFILES_DIRS = (
     BASE_DIR / 'static',
 )
 
-LOGIN_URL = '/'
+LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = 'home/'
+LOGOUT_REDIRECT_URL = '/accounts/login/'
+
+ACCOUNT_LOGOUT_REDIRECT_URL = '/'
+ACCOUNT_LOGOUT_ON_GET = True
+
+ACCOUNT_LOGIN_METHODS = {'username', 'email'}
+
+ACCOUNT_SIGNUP_FIELDS = [
+    'username',
+    'email',
+    'password1',
+    'password2'
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
