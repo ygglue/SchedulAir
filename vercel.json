@@ -3,7 +3,8 @@
   "builds": [
     {
       "src": "schedsite/asgi.py",
-      "use": "@vercel/python"
+      "use": "@vercel/python",
+      "config": {"maxLamdaSize": "15mb", "runtime": "python3.12.10"}
     }
   ],
   "routes": [
