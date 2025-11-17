@@ -1,6 +1,111 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('addSubjectForm');
     const message = document.getElementById('formMessage');
+    const addClassForm = document.getElementById('addClassForm');
+    const editClassForm = document.getElementById('editClassForm');
+    const addClassError = document.getElementById('addClassError');
+    const editClassError = document.getElementById('editClassError');
+
+    const toMinutes = (value) => {
+        if (!value || typeof value !== 'string' || !value.includes(':')) {
+            return null;
+        }
+        const [hours, minutes] = value.split(':').map(Number);
+        if (Number.isNaN(hours) || Number.isNaN(minutes)) {
+            return null;
+        }
+        return (hours * 60) + minutes;
+    };
+
+    const scheduleRegistry = (() => {
+        const collect = () => Array.from(document.querySelectorAll('.class-block[data-day]')).map((node) => ({
+            id: Number(node.dataset.classId),
+            day: node.dataset.day,
+            start: node.dataset.start,
+            end: node.dataset.end
+        }));
+
+        let cache = collect();
+
+        const refresh = () => {
+            cache = collect();
+        };
+
+        const findConflict = (day, startMinutes, endMinutes, ignoreId) => cache.find((schedule) => {
+            if (!schedule.day || schedule.day !== day) {
+                return false;
+            }
+            if (ignoreId && schedule.id === Number(ignoreId)) {
+                return false;
+            }
+            const scheduleStart = toMinutes(schedule.start);
+            const scheduleEnd = toMinutes(schedule.end);
+            if (scheduleStart === null || scheduleEnd === null) {
+                return false;
+            }
+            return scheduleStart < endMinutes && scheduleEnd > startMinutes;
+        });
+
+        return { refresh, findConflict };
+    })();
+
+    const showAlert = (element, text) => {
+        if (!element) return;
+        element.textContent = text;
+        element.classList.remove('d-none');
+    };
+
+    const hideAlert = (element) => {
+        if (!element) return;
+        element.textContent = '';
+        element.classList.add('d-none');
+    };
+
+    const validateScheduleInput = ({ day, start, end, ignoreId }) => {
+        if (!day) {
+            return { valid: false, message: 'Please choose a day for the class.' };
+        }
+
+        const startMinutes = toMinutes(start);
+        const endMinutes = toMinutes(end);
+
+        if (startMinutes === null || endMinutes === null) {
+            return { valid: false, message: 'Please provide a valid start and end time.' };
+        }
+
+        if (startMinutes >= endMinutes) {
+            return { valid: false, message: 'End time must be later than start time.' };
+        }
+
+        const conflict = scheduleRegistry.findConflict(day, startMinutes, endMinutes, ignoreId);
+        if (conflict) {
+            return {
+                valid: false,
+                message: `Conflicts with an existing class from ${conflict.start} to ${conflict.end}.`
+            };
+        }
+
+        return { valid: true };
+    };
+
+    if (addClassForm) {
+        addClassForm.addEventListener('submit', (e) => {
+            const validation = validateScheduleInput({
+                day: addClassForm.elements['classDay']?.value,
+                start: addClassForm.elements['startTime']?.value,
+                end: addClassForm.elements['endTime']?.value
+            });
+
+            if (!validation.valid) {
+                e.preventDefault();
+                showAlert(addClassError, validation.message);
+                return;
+            }
+
+            hideAlert(addClassError);
+            scheduleRegistry.refresh();
+        });
+    }
 
     // Handle form submit via AJAX
     form.addEventListener('submit', async (e) => {
@@ -100,11 +205,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Handle edit class form submission via AJAX
-    const editClassForm = document.getElementById('editClassForm');
     if (editClassForm) {
         editClassForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
+            const validation = validateScheduleInput({
+                day: editClassForm.elements['editClassDay']?.value,
+                start: editClassForm.elements['editStartTime']?.value,
+                end: editClassForm.elements['editEndTime']?.value,
+                ignoreId: editClassForm.elements['editClassId']?.value
+            });
+
+            if (!validation.valid) {
+                showAlert(editClassError, validation.message);
+                return;
+            }
+
+            hideAlert(editClassError);
+
             const formData = new FormData(editClassForm);
             const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 

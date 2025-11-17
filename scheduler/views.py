@@ -1,25 +1,63 @@
-from typing import ReadOnly
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib import messages
+from django.utils import timezone
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from .models import Subject, ClassSchedule
-from .forms import SubjectForm, ClassScheduleForm
 
 @login_required
 def home(request):
-    return render(request, 'scheduler/home.html', {})
+    if request.method == 'GET':
+        pass
+
+    now = timezone.localtime().time()
+
+    class_sched = ClassSchedule.objects.filter(
+        start_time__lte=now,
+        end_time__gte=now,
+    )
+
+    if class_sched.exists():
+        current_class = class_sched.first()
+        time_remaining = get_time_remaining(current_class)
+    else:
+        current_class = 'No Class'
+        time_remaining= ''
+
+
+    return render(request, 'scheduler/home.html', {'current_class': current_class, 'time_remaining': time_remaining, })
 
 def landing(request):
     return render(request, 'scheduler/landing.html', {})
+
+
+def login_view(request):
+    return render(request, 'scheduler/login.html', {})
 
 @login_required
 def account(request):
     return render(request, 'scheduler/account.html', {}) 
 
-def login_view(request):
-    return render(request, 'scheduler/login.html', {})
+def _parse_time_field(value):
+    try:
+        return datetime.strptime(value, '%H:%M').time()
+    except (TypeError, ValueError):
+        return None
+
+
+def _has_conflict(user, day, start_time, end_time, exclude_id=None):
+    schedules = ClassSchedule.objects.filter(
+        day_of_week=day,
+        subject__user=user
+    )
+    if exclude_id:
+        schedules = schedules.exclude(id=exclude_id)
+    return schedules.filter(
+        start_time__lt=end_time,
+        end_time__gt=start_time
+    ).exists()
+
 
 @login_required
 def editor(request):
@@ -64,13 +102,28 @@ def editor(request):
                 messages.error(request, "Please select a subject.")
                 return redirect('editor')
             day = request.POST.get('classDay')
-            start_time = request.POST.get('startTime')
-            end_time = request.POST.get('endTime')
+            start_time_raw = request.POST.get('startTime')
+            end_time_raw = request.POST.get('endTime')
+
+            start_time = _parse_time_field(start_time_raw)
+            end_time = _parse_time_field(end_time_raw)
+
+            if not day or not start_time or not end_time:
+                messages.error(request, "Please provide a valid day and time range.")
+                return redirect('editor')
+
+            if start_time >= end_time:
+                messages.error(request, "End time must be later than start time.")
+                return redirect('editor')
 
             try:
                 subject = Subject.objects.get(id=subject_id, user=request.user)
             except Subject.DoesNotExist:
                 messages.error(request, "Invalid subject selected.")
+                return redirect('editor')
+
+            if _has_conflict(request.user, day, start_time, end_time):
+                messages.error(request, "This class overlaps with an existing schedule.")
                 return redirect('editor')
 
             ClassSchedule.objects.create(
@@ -100,9 +153,37 @@ def editor(request):
                         return JsonResponse({'success': False, 'error': 'Invalid subject selected.'})
                     messages.error(request, "Invalid subject selected.")
                     return redirect('editor')
-                edit_class.day_of_week = request.POST.get('editClassDay')
-                edit_class.start_time = request.POST.get('editStartTime')
-                edit_class.end_time = request.POST.get('editEndTime')
+                day = request.POST.get('editClassDay')
+                start_time_raw = request.POST.get('editStartTime')
+                end_time_raw = request.POST.get('editEndTime')
+
+                start_time = _parse_time_field(start_time_raw)
+                end_time = _parse_time_field(end_time_raw)
+
+                if not day or not start_time or not end_time:
+                    error_message = "Please provide a valid day and time range."
+                    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                        return JsonResponse({'success': False, 'error': error_message})
+                    messages.error(request, error_message)
+                    return redirect('editor')
+
+                if start_time >= end_time:
+                    error_message = "End time must be later than start time."
+                    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                        return JsonResponse({'success': False, 'error': error_message})
+                    messages.error(request, error_message)
+                    return redirect('editor')
+
+                if _has_conflict(request.user, day, start_time, end_time, exclude_id=edit_class.id):
+                    error_message = "This class overlaps with an existing schedule."
+                    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                        return JsonResponse({'success': False, 'error': error_message})
+                    messages.error(request, error_message)
+                    return redirect('editor')
+
+                edit_class.day_of_week = day
+                edit_class.start_time = start_time
+                edit_class.end_time = end_time
                 edit_class.save()
                 if request.headers.get('x-requested-with') == 'XMLHttpRequest':
                     return JsonResponse({'success': True})
@@ -159,3 +240,28 @@ def editor(request):
         'fri_classes': fri_classes,
         'sat_classes': sat_classes,
     })
+
+
+def get_time_remaining(obj):
+    now = timezone.localtime().time()
+    today = timezone.localdate()
+
+    now_dt = datetime.combine(today, now)
+
+    # If event crosses midnight (e.g., 22:00 → 02:00)
+    if obj.end_time < obj.start_time:
+        # end_time is tomorrow
+        end_dt = datetime.combine(today + datetime.timedelta(days=1), obj.end_time)
+    else:
+        end_dt = datetime.combine(today, obj.end_time)
+
+    remaining = end_dt - now_dt
+
+    # If time already passed today, remaining will be negative
+    if remaining.total_seconds() < 0:
+        return datetime.timedelta(0)
+
+    minutes = int(remaining.total_seconds() // 60)
+
+    # No negative minutes
+    return max(minutes, 0)

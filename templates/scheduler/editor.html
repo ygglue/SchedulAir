@@ -37,7 +37,7 @@ Schedule Editor
         {% endif %}
         {% if sun_classes %}
           {% for class in sun_classes %}
-            <div class="class-block block-purple" data-duration="2h" data-class-id="{{ class.id }}" data-bs-toggle="modal" data-bs-target="#editModal">
+            <div class="class-block block-purple" data-duration="2h" data-class-id="{{ class.id }}" data-day="SUN" data-start="{{ class.start_time|time:'H:i' }}" data-end="{{ class.end_time|time:'H:i' }}" data-bs-toggle="modal" data-bs-target="#editModal">
               <div class="class-time">{{ class.start_time|time:"g:i A" }} - {{ class.end_time|time:"g:i A" }}</div>
               <div class="class-name">{{ class.subject.name }}</div>
             </div>
@@ -54,7 +54,7 @@ Schedule Editor
         {% endif %}
         {% if mon_classes %}
           {% for class in mon_classes %}
-            <div class="class-block block-purple" data-duration="2h" data-class-id="{{ class.id }}" data-bs-toggle="modal" data-bs-target="#editModal">
+            <div class="class-block block-purple" data-duration="2h" data-class-id="{{ class.id }}" data-day="MON" data-start="{{ class.start_time|time:'H:i' }}" data-end="{{ class.end_time|time:'H:i' }}" data-bs-toggle="modal" data-bs-target="#editModal">
               <div class="class-time">{{ class.start_time|time:"g:i A" }} - {{ class.end_time|time:"g:i A" }}</div>
               <div class="class-name">{{ class.subject.name }}</div>
             </div>
@@ -71,7 +71,7 @@ Schedule Editor
         {% endif %}
         {% if tue_classes %}
           {% for class in tue_classes %}
-            <div class="class-block block-purple" data-duration="2h" data-class-id="{{ class.id }}" data-bs-toggle="modal" data-bs-target="#editModal">
+            <div class="class-block block-purple" data-duration="2h" data-class-id="{{ class.id }}" data-day="TUE" data-start="{{ class.start_time|time:'H:i' }}" data-end="{{ class.end_time|time:'H:i' }}" data-bs-toggle="modal" data-bs-target="#editModal">
               <div class="class-time">{{ class.start_time|time:"g:i A" }} - {{ class.end_time|time:"g:i A" }}</div>
               <div class="class-name">{{ class.subject.name }}</div>
             </div>
@@ -88,7 +88,7 @@ Schedule Editor
         {% endif %}
         {% if wed_classes %}
           {% for class in wed_classes %}
-            <div class="class-block block-purple" data-duration="2h" data-class-id="{{ class.id }}" data-bs-toggle="modal" data-bs-target="#editModal">
+            <div class="class-block block-purple" data-duration="2h" data-class-id="{{ class.id }}" data-day="WED" data-start="{{ class.start_time|time:'H:i' }}" data-end="{{ class.end_time|time:'H:i' }}" data-bs-toggle="modal" data-bs-target="#editModal">
               <div class="class-time">{{ class.start_time|time:"g:i A" }} - {{ class.end_time|time:"g:i A" }}</div>
               <div class="class-name">{{ class.subject.name }}</div>
             </div>
@@ -105,7 +105,7 @@ Schedule Editor
         {% endif %}
         {% if thu_classes %}
           {% for class in thu_classes %}
-            <div class="class-block block-purple" data-duration="2h" data-class-id="{{ class.id }}" data-bs-toggle="modal" data-bs-target="#editModal">
+            <div class="class-block block-purple" data-duration="2h" data-class-id="{{ class.id }}" data-day="THU" data-start="{{ class.start_time|time:'H:i' }}" data-end="{{ class.end_time|time:'H:i' }}" data-bs-toggle="modal" data-bs-target="#editModal">
               <div class="class-time">{{ class.start_time|time:"g:i A" }} - {{ class.end_time|time:"g:i A" }}</div>
               <div class="class-name">{{ class.subject.name }}</div>
             </div>
@@ -122,7 +122,7 @@ Schedule Editor
         {% endif %}
         {% if fri_classes %}
           {% for class in fri_classes %}
-            <div class="class-block block-purple" data-duration="2h" data-class-id="{{ class.id }}" data-bs-toggle="modal" data-bs-target="#editModal">
+            <div class="class-block block-purple" data-duration="2h" data-class-id="{{ class.id }}" data-day="FRI" data-start="{{ class.start_time|time:'H:i' }}" data-end="{{ class.end_time|time:'H:i' }}" data-bs-toggle="modal" data-bs-target="#editModal">
               <div class="class-time">{{ class.start_time|time:"g:i A" }} - {{ class.end_time|time:"g:i A" }}</div>
               <div class="class-name">{{ class.subject.name }}</div>
             </div>
@@ -139,7 +139,7 @@ Schedule Editor
         {% endif %}
         {% if sat_classes %}
           {% for class in sat_classes %}
-            <div class="class-block block-purple" data-duration="2h" data-class-id="{{ class.id }}" data-bs-toggle="modal" data-bs-target="#editModal">
+            <div class="class-block block-purple" data-duration="2h" data-class-id="{{ class.id }}" data-day="SAT" data-start="{{ class.start_time|time:'H:i' }}" data-end="{{ class.end_time|time:'H:i' }}" data-bs-toggle="modal" data-bs-target="#editModal">
               <div class="class-time">{{ class.start_time|time:"g:i A" }} - {{ class.end_time|time:"g:i A" }}</div>
               <div class="class-name">{{ class.subject.name }}</div>
             </div>
@@ -194,6 +194,7 @@ Schedule Editor
             <input type="time" class="form-control" id="editEndTime" name="editEndTime" required/>
           </div>
         </form>
+        <div class="alert alert-warning d-none mt-2 w-100" id="editClassError" role="alert"></div>
       </div>
       <div class="modal-footer border-0 pt-3 justify-content-between">
         <button type="button" class="btn btn-outline-light rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#deleteModal">
@@ -296,6 +297,7 @@ Schedule Editor
             <input type="time" class="form-control" id="endTime" name="endTime" required/>
           </div>
         </form>
+        <div class="alert alert-warning d-none mt-2 w-100" id="addClassError" role="alert"></div>
       </div>
       <div class="modal-footer border-0 pt-3">
         <button type="button" class="btn btn-outline-light rounded-pill px-4" data-bs-dismiss="modal">

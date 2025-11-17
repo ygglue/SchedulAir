@@ -5,35 +5,29 @@
 {% block content %}
     <section class="container home-shell">
         <div class="row g-4 justify-content-center">
-          <div class="col-12 col-lg-5">
-            <article class="dashboard-card class-card shadow-xxl h-100">
-              <div class="card-label">Current Class</div>
-              <div class="class-card-body">
-                <div class="class-time">
-                  <span class="class-time-label">Now</span>
-                  <span class="class-time-range">08:00 – 09:15</span>
-                </div>
-                <h1 class="class-title">Advanced Mathematics</h1>
-                <p class="class-location">
-                  <i class="bi bi-geo-alt-fill me-2"></i>Room 204 · North Pavilion
-                </p>
-                <div class="class-meta">
-                  <div class="class-meta-item">
-                    <i class="bi bi-person-fill"></i>
-                    <span>Ms. King</span>
+            {% if time_remaining != '' %}
+            <div class="col-12 col-lg-5">
+              <article class="dashboard-card class-card shadow-xxl h-100">
+                <div class="card-label">Current Class</div>
+                <div class="class-card-body">
+                  <div class="class-time">
+                    <span class="class-time-range">{{current_class.start_time|time:"g:i A"}} – {{current_class.end_time|time:"g:i A"}}</span>
                   </div>
-                  <div class="class-meta-item">
-                    <i class="bi bi-card-checklist"></i>
-                    <span>Topic: Calculus Review</span>
+                  <h1 class="class-title">{{current_class.subject.name}}</h1>
+                  <div class="class-meta">
+                    <div class="class-meta-item">
+                      <i class="bi bi-person-fill"></i>
+                      <span>{{current_class.subject.teacher}}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="class-status">
-                <span class="status-indicator"></span>
-                In progress — 40 mins remaining
-              </div>
-            </article>
-          </div>
+                <div class="class-status">
+                  <span class="status-indicator"></span>
+                  In progress — {{time_remaining}} minutes remaining
+                </div>
+              </article>
+            </div>
+            {% endif %}
           <div class="col-12 col-lg-7">
             <article class="dashboard-card weather-board shadow-xxl h-100">
               <div class="weather-main">
