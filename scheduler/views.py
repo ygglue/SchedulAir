@@ -1,3 +1,4 @@
+from typing import ReadOnly
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib import messages
@@ -84,7 +85,10 @@ def editor(request):
         elif 'editSubjectSelect' in request.POST:
             class_id = request.POST.get('editClassId')
             if not class_id:
-                return JsonResponse({'success': False, 'error': 'Class ID is required.'})
+                if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                    return JsonResponse({'success': False, 'error': 'Class ID is required.'})
+                messages.error(request, "Class ID is required.")
+                return redirect('editor')
             try:
                 edit_class = ClassSchedule.objects.get(id=class_id, subject__user=request.user)
                 subject_id = request.POST.get('editSubjectSelect')
@@ -92,15 +96,43 @@ def editor(request):
                     subject = Subject.objects.get(id=subject_id, user=request.user)
                     edit_class.subject = subject
                 except Subject.DoesNotExist:
-                    return JsonResponse({'success': False, 'error': 'Invalid subject selected.'})
+                    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                        return JsonResponse({'success': False, 'error': 'Invalid subject selected.'})
+                    messages.error(request, "Invalid subject selected.")
+                    return redirect('editor')
                 edit_class.day_of_week = request.POST.get('editClassDay')
                 edit_class.start_time = request.POST.get('editStartTime')
                 edit_class.end_time = request.POST.get('editEndTime')
                 edit_class.save()
-                return JsonResponse({'success': True, 'message': 'Class updated successfully.'})
+                if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                    return JsonResponse({'success': True})
+                messages.success(request, "Class updated successfully.")
+                return redirect('editor')
                 
             except ClassSchedule.DoesNotExist:
-                return JsonResponse({'success': False, 'error': 'Class not found.'})
+                if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                    return JsonResponse({'success': False, 'error': 'Class not found.'})
+                messages.error(request, "Class not found.")
+                return redirect('editor')
+        elif 'deleteClassId' in request.POST:
+            class_id = request.POST.get('deleteClassId')
+            if class_id:
+                try:
+                    delete_class = ClassSchedule.objects.get(id=class_id, subject__user=request.user)
+                    delete_class.delete()
+                    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                        return JsonResponse({'success': True})
+                    messages.success(request, "Class deleted successfully.")
+                    return redirect('editor')
+                except ClassSchedule.DoesNotExist:
+                    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                        return JsonResponse({'success': False, 'error': 'Class not found.'})
+                    messages.error(request, "Class not found.")
+                    return redirect('editor')
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return JsonResponse({'success': False, 'error': 'Class ID is required.'})
+            messages.error(request, "Class ID is required.")
+            return redirect('editor')
         
     
     current_date = datetime.now().strftime("%A, %B %d")

@@ -137,4 +137,74 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Handle deleteModal to fetch classId from data-class-id or editModal
+    const deleteModal = document.getElementById('deleteModal');
+    if (deleteModal) {
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            // Get the button that triggered the modal
+            const button = event.relatedTarget;
+            
+            // Check if it's a button with data-class-id attribute
+            let classId = button ? button.getAttribute('data-class-id') : null;
+            
+            // If no data-class-id on button, try to get it from editModal's hidden input
+            if (!classId) {
+                const editClassIdInput = document.getElementById('editClassId');
+                if (editClassIdInput) {
+                    classId = editClassIdInput.value;
+                }
+            }
+            
+            // Set the classId to deleteClassId input
+            const deleteClassIdInput = document.getElementById('deleteClassId');
+            if (deleteClassIdInput) {
+                deleteClassIdInput.value = classId || '';
+            }
+        });
+    }
+
+    // Handle delete class form submission via AJAX
+    const deleteClassForm = document.getElementById('deleteClassForm');
+    if (deleteClassForm) {
+        deleteClassForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(deleteClassForm);
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            try {
+                const response = await fetch("", {
+                    method: "POST",
+                    headers: {
+                        'X-CSRFToken': csrfToken,
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Close the delete modal
+                    const deleteModalInstance = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+                    if (deleteModalInstance) {
+                        deleteModalInstance.hide();
+                    }
+                    // Close the edit modal if it's open
+                    const editModalInstance = bootstrap.Modal.getInstance(document.getElementById('editModal'));
+                    if (editModalInstance) {
+                        editModalInstance.hide();
+                    }
+                    // Reload the page to show updated data
+                    window.location.reload();
+                } else {
+                    alert('Error: ' + (data.error || 'Failed to delete class'));
+                }
+            } catch (error) {
+                console.error('Error deleting class:', error);
+                alert('An error occurred while deleting the class.');
+            }
+        });
+    }
 });

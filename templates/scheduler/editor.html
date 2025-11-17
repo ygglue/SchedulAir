@@ -30,7 +30,11 @@ Schedule Editor
     </div>
     <div class="week-schedule-grid">
       <div class="day-column">
-        <div class="week-day-header d-lg-none mb-3">Sun</div>
+        {% if current_day_abbr == "Sun" %}
+          <div class="week-day-header d-lg-none mb-3 active">Sun</div>
+        {% else %}
+          <div class="week-day-header d-lg-none mb-3">Sun</div>
+        {% endif %}
         {% if sun_classes %}
           {% for class in sun_classes %}
             <div class="class-block block-purple" data-duration="2h" data-class-id="{{ class.id }}" data-bs-toggle="modal" data-bs-target="#editModal">
@@ -43,7 +47,11 @@ Schedule Editor
         {% endif %}
       </div>
       <div class="day-column">
-        <div class="week-day-header d-lg-none mb-3">Mon</div>
+        {% if current_day_abbr == "Mon" %}
+          <div class="week-day-header d-lg-none mb-3 active">Mon</div>
+        {% else %}
+          <div class="week-day-header d-lg-none mb-3">Mon</div>
+        {% endif %}
         {% if mon_classes %}
           {% for class in mon_classes %}
             <div class="class-block block-purple" data-duration="2h" data-class-id="{{ class.id }}" data-bs-toggle="modal" data-bs-target="#editModal">
@@ -56,7 +64,11 @@ Schedule Editor
         {% endif %}
       </div>
       <div class="day-column">
-        <div class="week-day-header d-lg-none mb-3">Tue</div>
+        {% if current_day_abbr == "Tue" %}
+          <div class="week-day-header d-lg-none mb-3 active">Tue</div>
+        {% else %}
+          <div class="week-day-header d-lg-none mb-3">Tue</div>
+        {% endif %}
         {% if tue_classes %}
           {% for class in tue_classes %}
             <div class="class-block block-purple" data-duration="2h" data-class-id="{{ class.id }}" data-bs-toggle="modal" data-bs-target="#editModal">
@@ -69,7 +81,11 @@ Schedule Editor
         {% endif %}
       </div>
       <div class="day-column">
-        <div class="week-day-header d-lg-none mb-3 active">Wed</div>
+        {% if current_day_abbr == "Wed" %}
+          <div class="week-day-header d-lg-none mb-3 active">Wed</div>
+        {% else %}
+          <div class="week-day-header d-lg-none mb-3">Wed</div>
+        {% endif %}
         {% if wed_classes %}
           {% for class in wed_classes %}
             <div class="class-block block-purple" data-duration="2h" data-class-id="{{ class.id }}" data-bs-toggle="modal" data-bs-target="#editModal">
@@ -82,7 +98,11 @@ Schedule Editor
         {% endif %}
       </div>
       <div class="day-column">
-        <div class="week-day-header d-lg-none mb-3">Thu</div>
+        {% if current_day_abbr == "Thu" %}
+          <div class="week-day-header d-lg-none mb-3 active">Thu</div>
+        {% else %}
+          <div class="week-day-header d-lg-none mb-3">Thu</div>
+        {% endif %}
         {% if thu_classes %}
           {% for class in thu_classes %}
             <div class="class-block block-purple" data-duration="2h" data-class-id="{{ class.id }}" data-bs-toggle="modal" data-bs-target="#editModal">
@@ -95,7 +115,11 @@ Schedule Editor
         {% endif %}
       </div>
       <div class="day-column">
-        <div class="week-day-header d-lg-none mb-3">Fri</div>
+        {% if current_day_abbr == "Fri" %}
+          <div class="week-day-header d-lg-none mb-3 active">Fri</div>
+        {% else %}
+          <div class="week-day-header d-lg-none mb-3">Fri</div>
+        {% endif %}
         {% if fri_classes %}
           {% for class in fri_classes %}
             <div class="class-block block-purple" data-duration="2h" data-class-id="{{ class.id }}" data-bs-toggle="modal" data-bs-target="#editModal">
@@ -108,7 +132,11 @@ Schedule Editor
         {% endif %}
       </div>
       <div class="day-column">
-        <div class="week-day-header d-lg-none mb-3">Sat</div>
+        {% if current_day_abbr == "Sat" %}
+          <div class="week-day-header d-lg-none mb-3 active">Sat</div>
+        {% else %}
+          <div class="week-day-header d-lg-none mb-3">Sat</div>
+        {% endif %}
         {% if sat_classes %}
           {% for class in sat_classes %}
             <div class="class-block block-purple" data-duration="2h" data-class-id="{{ class.id }}" data-bs-toggle="modal" data-bs-target="#editModal">
@@ -168,10 +196,32 @@ Schedule Editor
         </form>
       </div>
       <div class="modal-footer border-0 pt-3 justify-content-between">
-        <button type="button" class="btn btn-outline-light rounded-pill px-4" >
+        <button type="button" class="btn btn-outline-light rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#deleteModal">
           Delete
         </button>
         <button type="submit" form="editClassForm" class="btn btn-gradient rounded-pill px-4">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header border-0 pb-3">
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Edit Class Section -->
+        <h2 class="modal-title-custom modal-section-title mb-3 justify-content-center">Are you sure you want to delete?</h2>
+        <form class="row g-3" id="deleteClassForm" method="POST">
+          {% csrf_token %}
+          <input type="hidden" id="deleteClassId" name="deleteClassId" value="">
+        </form>
+      </div>
+      <div class="modal-footer border-0 pt-3 justify-content-center">
+        <button type="submit" form="deleteClassForm" class="btn btn-gradient rounded-pill px-4">Confirm</button>
       </div>
     </div>
   </div>
