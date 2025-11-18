@@ -214,8 +214,7 @@ Schedule Editor
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <!-- Edit Class Section -->
-        <h2 class="modal-title-custom modal-section-title mb-3 justify-content-center">Are you sure you want to delete?</h2>
+        <h2 class="modal-title-custom modal-section-title mb-3">Are you sure you want to delete?</h2>
         <form class="row g-3" id="deleteClassForm" method="POST">
           {% csrf_token %}
           <input type="hidden" id="deleteClassId" name="deleteClassId" value="">

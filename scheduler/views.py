@@ -5,11 +5,11 @@ from django.utils import timezone
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from .models import Subject, ClassSchedule
+import os, requests
 
 @login_required
 def home(request):
-    if request.method == 'GET':
-        pass
+    api_key = os.getenv('OPENWEATHER_API_KEY')
 
     now = timezone.localtime().time()
 
@@ -37,7 +37,38 @@ def login_view(request):
 
 @login_required
 def account(request):
-    return render(request, 'scheduler/account.html', {}) 
+    cities = []
+    user_profile = request.user.profile
+    
+    user_city = user_profile.city.split('|', 1)[0] or 'You have not selected you city yet...'
+
+    if request.method == 'POST':
+        if 'locationData' in request.POST:
+            #pang update ng User.profile.city
+            location_data = request.POST.get('locationData')
+            user_profile.city = location_data
+            user_profile.save()
+
+        return redirect('account')
+
+    if request.method == 'GET' and 'locationInput' in request.GET:
+        #fetching city data via nominatim 
+        query = request.GET.get('locationInput', '').strip()
+        url = 'https://nominatim.openstreetmap.org/search'
+        params = {
+            'city': query,
+            'format': 'json',
+            'addressdetails': 1,
+            'limit': 5,
+            
+        }
+        headers = {"User-Agent": os.getenv('NOMINATIM_USER_AGENT')}
+        data = requests.get(url=url, params=params, headers=headers).json()
+
+        for i in range(len(data)):
+            cities.append(data[i])
+        
+    return render(request, 'scheduler/account.html', {'cities': cities, 'user_city': user_city}) 
 
 def _parse_time_field(value):
     try:
