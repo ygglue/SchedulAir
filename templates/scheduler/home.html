@@ -32,15 +32,17 @@
             <article class="dashboard-card weather-board shadow-xxl h-100">
               <div class="weather-main">
                 <div>
-                  <p class="weather-region text-uppercase mb-2">North America Campus</p>
+                  <p class="weather-region text-uppercase mb-2">{{city_displayname1}}</p>
+                  <p class="weather-region text-uppercase mb-2">{{city_displayname2}}</p>
                   <div class="d-flex align-items-center gap-3">
-                    <h2 class="weather-temp mb-0">19°</h2>
+                    <h2 class="weather-temp mb-0">{{weather_data.main.temp|floatformat:0}}°</h2>
                     <div class="weather-condition">
-                      <span class="condition-label">Precipitations</span>
-                      <span class="condition-range">Max 24° · Min 18°</span>
+                      <span class="condition-label">{{weather_data.weather.0.main}}</span>
+                      <span class="condition-range">{{weather_data.weather.0.description|title}}</span>
+                      <span class="condition-range">Max {{weather_data.main.temp_max|floatformat:0}}° · Min {{weather_data.main.temp_min|floatformat:0}}°</span>
                     </div>
                   </div>
-                  <p class="weather-today mb-0">Feels like 20° · Gentle breeze 12 km/h</p>
+                  <p class="weather-today mb-0">Feels like {{weather_data.main.feels_like|floatformat:0}}° · Wind speed is at {{windspeed|floatformat:2}} km/h</p>
                 </div>
                 <div class="weather-illustration">
                   <span class="weather-sun"></span>
@@ -50,7 +52,7 @@
                   <span class="weather-rain rain-3"></span>
                 </div>
               </div>
-              <div class="weather-forecast">
+              {% comment %} <div class="weather-forecast">
                 <h3 class="forecast-heading">Next 3 Classes</h3>
                 <div class="forecast-strip">
                   <div class="forecast-card">
@@ -78,22 +80,22 @@
                     <span class="forecast-class">Athletics · 17:00</span>
                   </div>
                 </div>
-              </div>
+              </div> {% endcomment %}
               <div class="weather-meta">
                 <div class="meta-card">
-                  <span class="meta-label">Air Quality</span>
-                  <span class="meta-value">3 · Low Health Risk</span>
-                  <a href="#" class="meta-link">See more</a>
+                  <span class="meta-label">Humidity & Pressure</span>
+                  <span class="meta-value">{{weather_data.main.humidity}}%</span>
+                  <span class="meta-value">{{weather_data.main.pressure}} hPa</span>
                 </div>
                 <div class="meta-card">
                   <span class="meta-label">Sunrise</span>
-                  <span class="meta-value">5:28 AM</span>
-                  <span class="meta-subtext">Sunset 7:25 PM</span>
+                  <span class="meta-value">{{sunrise}}</span>
+                  <span class="meta-subtext">Sunset {{sunset}}</span>
                 </div>
                 <div class="meta-card">
-                  <span class="meta-label">UV Index</span>
-                  <span class="meta-value">4 · Moderate</span>
-                  <span class="meta-subtext">Carry sun protection</span>
+                  <span class="meta-label">Cloudiness</span>
+                  <span class="meta-value">{{weather_data.clouds.all}}%</span>
+                  <span class="meta-subtext"></span>
                 </div>
               </div>
             </article>

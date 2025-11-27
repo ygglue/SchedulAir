@@ -9,9 +9,23 @@ import os, requests
 
 @login_required
 def home(request):
-    api_key = os.getenv('OPENWEATHER_API_KEY')
-
+    user_city = request.user.profile.city.split('|')
+    display_name = user_city[0].split(', ', 1)
     now = timezone.localtime().time()
+    api_key = os.getenv('OPENWEATHER_API_KEY')
+    openweather_url = 'https://api.openweathermap.org/data/2.5/weather'
+    openweather_params = {
+        'lat': user_city[1],
+        'lon': user_city[2],
+        'appid': api_key,
+        'units': 'metric'
+    }
+
+    weather_data = requests.get(url=openweather_url, params=openweather_params).json()
+    windspeed = float(weather_data.get('wind').get('speed')) * 3.6
+    sunrise = datetime.fromtimestamp(weather_data.get('sys').get('sunrise')).strftime("%I:%M %p").lstrip("0")
+    sunset = datetime.fromtimestamp(weather_data.get('sys').get('sunset')).strftime("%I:%M %p").lstrip("0")
+
 
     class_sched = ClassSchedule.objects.filter(
         start_time__lte=now,
@@ -26,7 +40,14 @@ def home(request):
         time_remaining= ''
 
 
-    return render(request, 'scheduler/home.html', {'current_class': current_class, 'time_remaining': time_remaining, })
+    return render(request, 'scheduler/home.html', {'current_class': current_class, 
+                                                   'time_remaining': time_remaining, 
+                                                   'city_displayname1': display_name[0], 
+                                                   'city_displayname2': display_name[1], 
+                                                   'weather_data': weather_data, 
+                                                   'windspeed': windspeed,
+                                                   'sunrise': sunrise,
+                                                   'sunset': sunset})
 
 def landing(request):
     return render(request, 'scheduler/landing.html', {})

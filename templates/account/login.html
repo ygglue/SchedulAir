@@ -34,7 +34,7 @@
           <h2 class="h3 text-white mb-4 text-center" style="font-family: 'Space Grotesk', serif;">
             Welcome Back
           </h2>
-          <form method="post" class="row g-3" action="{% url 'account_signup' %}">
+          <form method="post" class="row g-3" action="{% url 'account_login' %}">
             {% csrf_token %}
             <div class="col-12">
               <label for="id_login" class="modal-label">Email address or Username</label>
