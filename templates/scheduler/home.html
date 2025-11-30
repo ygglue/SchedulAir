@@ -45,11 +45,74 @@
                   <p class="weather-today mb-0">Feels like {{weather_data.main.feels_like|floatformat:0}}° · Wind speed is at {{windspeed|floatformat:2}} km/h</p>
                 </div>
                 <div class="weather-illustration">
-                  <span class="weather-sun"></span>
-                  <span class="weather-cloud"></span>
-                  <span class="weather-rain rain-1"></span>
-                  <span class="weather-rain rain-2"></span>
-                  <span class="weather-rain rain-3"></span>
+                  {% with icon=weather_data.weather.0.icon %}
+                    {% if icon == "01d" %}
+                      {# Clear sky (day) #}
+                      <span class="weather-sun"></span>
+                    {% elif icon == "01n" %}
+                      {# Clear sky (night) #}
+                      <span class="weather-moon"></span>
+                      <span class="weather-stars star-1"></span>
+                      <span class="weather-stars star-2"></span>
+                      <span class="weather-stars star-3"></span>
+                      <span class="weather-stars star-4"></span>
+                    {% elif icon == "02d" %}
+                      {# Few clouds (day) #}
+                      <span class="weather-sun"></span>
+                      <span class="weather-cloud-small"></span>
+                    {% elif icon == "02n" %}
+                      {# Few clouds (night) #}
+                      <span class="weather-moon"></span>
+                      <span class="weather-cloud-small"></span>
+                    {% elif icon == "03d" or icon == "03n" %}
+                      {# Scattered clouds #}
+                      <span class="weather-cloud"></span>
+                    {% elif icon == "04d" or icon == "04n" %}
+                      {# Broken clouds #}
+                      <span class="weather-cloud-large"></span>
+                    {% elif icon == "09d" or icon == "09n" %}
+                      {# Shower rain #}
+                      <span class="weather-cloud"></span>
+                      <span class="weather-rain rain-1"></span>
+                      <span class="weather-rain rain-2"></span>
+                      <span class="weather-rain rain-3"></span>
+                    {% elif icon == "10d" %}
+                      {# Rain (day) #}
+                      <span class="weather-sun"></span>
+                      <span class="weather-cloud"></span>
+                      <span class="weather-rain rain-1"></span>
+                      <span class="weather-rain rain-2"></span>
+                      <span class="weather-rain rain-3"></span>
+                    {% elif icon == "10n" %}
+                      {# Rain (night) #}
+                      <span class="weather-moon"></span>
+                      <span class="weather-cloud"></span>
+                      <span class="weather-rain rain-1"></span>
+                      <span class="weather-rain rain-2"></span>
+                      <span class="weather-rain rain-3"></span>
+                    {% elif icon == "11d" or icon == "11n" %}
+                      {# Thunderstorm #}
+                      <span class="weather-cloud-large"></span>
+                      <span class="weather-lightning"></span>
+                      <span class="weather-rain rain-1"></span>
+                      <span class="weather-rain rain-2"></span>
+                      <span class="weather-rain rain-3"></span>
+                    {% elif icon == "13d" or icon == "13n" %}
+                      {# Snow #}
+                      <span class="weather-cloud"></span>
+                      <span class="weather-snow snow-1"></span>
+                      <span class="weather-snow snow-2"></span>
+                      <span class="weather-snow snow-3"></span>
+                      <span class="weather-snow snow-4"></span>
+                      <span class="weather-snow snow-5"></span>
+                    {% elif icon == "50d" or icon == "50n" %}
+                      {# Mist #}
+                      <span class="weather-mist"></span>
+                    {% else %}
+                      {# Default fallback #}
+                      <span class="weather-cloud"></span>
+                    {% endif %}
+                  {% endwith %}
                 </div>
               </div>
               {% comment %} <div class="weather-forecast">
