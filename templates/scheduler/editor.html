@@ -27,8 +27,9 @@ Schedule Editor
         {% else %}
           <div class="week-day-header">
             {{day}}
-            {{weather_icons.forloop.counter0}}
-            <img class="weather-icon" src="{{weather_icons|index:forloop.counter0}}" alt="weather-icon-img">
+            {% if weather_icons|index:forloop.counter0 != "" %}
+              <img class="weather-icon" src="{{weather_icons|index:forloop.counter0}}" alt="weather-icon-img">
+            {% endif %}
           </div>
         {% endif %}
       {% endfor %}

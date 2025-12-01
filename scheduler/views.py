@@ -7,17 +7,16 @@ from django.contrib.auth.decorators import login_required
 from .models import Subject, ClassSchedule
 from .services import get_weather_forecast, get_time_remaining, get_icon_url
 import os, requests
-
-now = timezone.localtime().time()
-current_hour = int(now.strftime('%I').lstrip('0'))
-current_day = int(datetime.now().weekday())
-is_day = 6 <= current_hour < 18
+from django.core.cache import cache
 
 @login_required
 def home(request):
     user_city = request.user.profile.city.split('|')
     display_name = user_city[0].split(', ', 1)
-
+    now = timezone.localtime().time()
+    current_hour = int(now.strftime('%I').lstrip('0'))
+    current_day = int(datetime.now().weekday())
+    is_day = 6 <= current_hour < 18
     weather_data = get_weather_forecast(user_city[1], user_city[2])
 
     #hourly
@@ -79,6 +78,7 @@ def account(request):
 
     if request.method == 'POST':
         if 'locationData' in request.POST:
+            print('deleted cache: ', cache.delete(f'weather_forecast_{user_profile.city.split('|')[1]}_{user_profile.city.split('|')[2]}'))
             #pang update ng User.profile.city
             location_data = request.POST.get('locationData')
             user_profile.city = location_data
@@ -128,6 +128,10 @@ def _has_conflict(user, day, start_time, end_time, exclude_id=None):
 @login_required
 def editor(request):
     user_city = request.user.profile.city.split('|')
+    now = timezone.localtime().time()
+    current_hour = int(now.strftime('%I').lstrip('0'))
+    current_day = int(datetime.now().weekday())
+    is_day = 6 <= current_hour < 18
     weather_data = get_weather_forecast(user_city[1], user_city[2])
     weather_code = weather_data['daily'].get('weather_code')
     weather_icons=get_icon_url(current_day=current_day, weather_code=weather_code, is_day=is_day)
