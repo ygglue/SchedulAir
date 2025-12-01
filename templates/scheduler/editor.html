@@ -1,4 +1,5 @@
 {% extends 'scheduler/base.html' %}
+{% load index %}
 {% block title %}
 Schedule Editor
 {% endblock %}
@@ -24,7 +25,11 @@ Schedule Editor
         {% if day == current_day_abbr %}
           <div class="week-day-header active">{{day}}</div>
         {% else %}
-          <div class="week-day-header">{{day}}</div>
+          <div class="week-day-header">
+            {{day}}
+            {{weather_icons.forloop.counter0}}
+            <img class="weather-icon" src="{{weather_icons|index:forloop.counter0}}" alt="weather-icon-img">
+          </div>
         {% endif %}
       {% endfor %}
     </div>
@@ -33,7 +38,9 @@ Schedule Editor
         {% if current_day_abbr == "Sun" %}
           <div class="week-day-header d-lg-none mb-3 active">Sun</div>
         {% else %}
-          <div class="week-day-header d-lg-none mb-3">Sun</div>
+          <div class="week-day-header d-lg-none mb-3">Sun
+            <img class="weather-icon" src="" alt="weather-icon-img">
+          </div>
         {% endif %}
         {% if sun_classes %}
           {% for class in sun_classes %}
@@ -50,7 +57,9 @@ Schedule Editor
         {% if current_day_abbr == "Mon" %}
           <div class="week-day-header d-lg-none mb-3 active">Mon</div>
         {% else %}
-          <div class="week-day-header d-lg-none mb-3">Mon</div>
+          <div class="week-day-header d-lg-none mb-3">Mon
+            <img class="weather-icon" src="http://openweathermap.org/img/wn/11d@2x.png" alt="weather-icon-img">
+          </div>
         {% endif %}
         {% if mon_classes %}
           {% for class in mon_classes %}
@@ -67,7 +76,9 @@ Schedule Editor
         {% if current_day_abbr == "Tue" %}
           <div class="week-day-header d-lg-none mb-3 active">Tue</div>
         {% else %}
-          <div class="week-day-header d-lg-none mb-3">Tue</div>
+          <div class="week-day-header d-lg-none mb-3">Tue
+            <img class="weather-icon" src="http://openweathermap.org/img/wn/11d@2x.png" alt="weather-icon-img">
+          </div>
         {% endif %}
         {% if tue_classes %}
           {% for class in tue_classes %}
@@ -84,7 +95,9 @@ Schedule Editor
         {% if current_day_abbr == "Wed" %}
           <div class="week-day-header d-lg-none mb-3 active">Wed</div>
         {% else %}
-          <div class="week-day-header d-lg-none mb-3">Wed</div>
+          <div class="week-day-header d-lg-none mb-3">Wed
+            <img class="weather-icon" src="http://openweathermap.org/img/wn/11d@2x.png" alt="weather-icon-img">
+          </div>
         {% endif %}
         {% if wed_classes %}
           {% for class in wed_classes %}
@@ -101,7 +114,9 @@ Schedule Editor
         {% if current_day_abbr == "Thu" %}
           <div class="week-day-header d-lg-none mb-3 active">Thu</div>
         {% else %}
-          <div class="week-day-header d-lg-none mb-3">Thu</div>
+          <div class="week-day-header d-lg-none mb-3">Thu
+            <img class="weather-icon" src="http://openweathermap.org/img/wn/11d@2x.png" alt="weather-icon-img">
+          </div>
         {% endif %}
         {% if thu_classes %}
           {% for class in thu_classes %}
@@ -118,7 +133,9 @@ Schedule Editor
         {% if current_day_abbr == "Fri" %}
           <div class="week-day-header d-lg-none mb-3 active">Fri</div>
         {% else %}
-          <div class="week-day-header d-lg-none mb-3">Fri</div>
+          <div class="week-day-header d-lg-none mb-3">Fri
+            <img class="weather-icon" src="http://openweathermap.org/img/wn/11d@2x.png" alt="weather-icon-img">
+          </div>
         {% endif %}
         {% if fri_classes %}
           {% for class in fri_classes %}
@@ -135,7 +152,9 @@ Schedule Editor
         {% if current_day_abbr == "Sat" %}
           <div class="week-day-header d-lg-none mb-3 active">Sat</div>
         {% else %}
-          <div class="week-day-header d-lg-none mb-3">Sat</div>
+          <div class="week-day-header d-lg-none mb-3">Sat
+            <img class="weather-icon" src="http://openweathermap.org/img/wn/11d@2x.png" alt="weather-icon-img">
+          </div>
         {% endif %}
         {% if sat_classes %}
           {% for class in sat_classes %}

@@ -5,27 +5,34 @@ from django.utils import timezone
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from .models import Subject, ClassSchedule
+from .services import get_weather_forecast, get_time_remaining, get_icon_url
 import os, requests
+
+now = timezone.localtime().time()
+current_hour = int(now.strftime('%I').lstrip('0'))
+current_day = int(datetime.now().weekday())
+is_day = 6 <= current_hour < 18
 
 @login_required
 def home(request):
     user_city = request.user.profile.city.split('|')
     display_name = user_city[0].split(', ', 1)
-    now = timezone.localtime().time()
-    api_key = os.getenv('OPENWEATHER_API_KEY')
-    openweather_url = 'https://api.openweathermap.org/data/2.5/weather'
-    openweather_params = {
-        'lat': user_city[1],
-        'lon': user_city[2],
-        'appid': api_key,
-        'units': 'metric'
-    }
 
-    weather_data = requests.get(url=openweather_url, params=openweather_params).json()
-    windspeed = float(weather_data.get('wind').get('speed')) * 3.6
-    sunrise = datetime.fromtimestamp(weather_data.get('sys').get('sunrise')).strftime("%I:%M %p").lstrip("0")
-    sunset = datetime.fromtimestamp(weather_data.get('sys').get('sunset')).strftime("%I:%M %p").lstrip("0")
+    weather_data = get_weather_forecast(user_city[1], user_city[2])
 
+    #hourly
+    windspeed = weather_data.get('hourly').get('wind_speed_10m')[current_hour]
+    temperature = weather_data.get('hourly').get('temperature_2m')[current_hour]
+    humidity = weather_data.get('hourly').get('relative_humidity_2m')[current_hour]
+    apparent_temperature = weather_data.get('hourly').get('apparent_temperature')[current_hour]
+    dew_point = weather_data.get('hourly').get('dew_point_2m')[current_hour]
+    precipitation_probability = weather_data.get('hourly').get('precipitation_probability')[current_hour]
+    weather_code = weather_data.get('hourly').get('weather_code')[current_hour]
+
+    #daily
+    max_temperature = weather_data.get('daily').get('temperature_2m_max')[0]
+    min_temperature = weather_data.get('daily').get('temperature_2m_max')[0]
+    precipitation_sum = weather_data.get('daily').get('precipitation_sum')[0]
 
     class_sched = ClassSchedule.objects.filter(
         start_time__lte=now,
@@ -44,10 +51,17 @@ def home(request):
                                                    'time_remaining': time_remaining, 
                                                    'city_displayname1': display_name[0], 
                                                    'city_displayname2': display_name[1], 
-                                                   'weather_data': weather_data, 
+                                                   'temperature': temperature, 
+                                                   'max_temperature': max_temperature, 
+                                                   'min_temperature': min_temperature, 
                                                    'windspeed': windspeed,
-                                                   'sunrise': sunrise,
-                                                   'sunset': sunset})
+                                                   'apparent_temperature': apparent_temperature,
+                                                   'humidity': humidity,
+                                                   'dew_point': dew_point,
+                                                   'precipitation_probability': precipitation_probability,
+                                                   'precipitation_sum': precipitation_sum,
+                                                   'weather_code': weather_code,
+                                                   'is_day': is_day})
 
 def landing(request):
     return render(request, 'scheduler/landing.html', {})
@@ -113,6 +127,11 @@ def _has_conflict(user, day, start_time, end_time, exclude_id=None):
 
 @login_required
 def editor(request):
+    user_city = request.user.profile.city.split('|')
+    weather_data = get_weather_forecast(user_city[1], user_city[2])
+    weather_code = weather_data['daily'].get('weather_code')
+    weather_icons=get_icon_url(current_day=current_day, weather_code=weather_code, is_day=is_day)
+
     # Handle GET request for fetching class details
     if request.method == 'GET' and request.headers.get('x-requested-with') == 'XMLHttpRequest' and 'getClass' in request.GET:
         class_id = request.GET.get('editClassId')
@@ -291,6 +310,8 @@ def editor(request):
         'thu_classes': thu_classes,
         'fri_classes': fri_classes,
         'sat_classes': sat_classes,
+        'weather_icons': weather_icons,
+        'week_iterable': range(7)
     })
 
 

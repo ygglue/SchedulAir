@@ -1,168 +1,140 @@
 {% extends 'scheduler/base.html' %} {% block title %}
-    Home
+Home
 {% endblock %}
 
 {% block content %}
-    <section class="container home-shell">
-        <div class="row g-4 justify-content-center">
-            {% if time_remaining != '' %}
-            <div class="col-12 col-lg-5">
-              <article class="dashboard-card class-card shadow-xxl h-100">
-                <div class="card-label">Current Class</div>
-                <div class="class-card-body">
-                  <div class="class-time">
-                    <span class="class-time-range">{{current_class.start_time|time:"g:i A"}} – {{current_class.end_time|time:"g:i A"}}</span>
-                  </div>
-                  <h1 class="class-title">{{current_class.subject.name}}</h1>
-                  <div class="class-meta">
-                    <div class="class-meta-item">
-                      <i class="bi bi-person-fill"></i>
-                      <span>{{current_class.subject.teacher}}</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="class-status">
-                  <span class="status-indicator"></span>
-                  In progress — {{time_remaining}} minutes remaining
-                </div>
-              </article>
+<section class="container home-shell">
+  <div class="row g-4 justify-content-center">
+    {% if time_remaining != '' %}
+    <div class="col-12 col-lg-5">
+      <article class="dashboard-card class-card shadow-xxl h-100">
+        <div class="card-label">Current Class</div>
+        <div class="class-card-body">
+          <div class="class-time">
+            <span class="class-time-range">{{current_class.start_time|time:"g:i A"}} –
+              {{current_class.end_time|time:"g:i A"}}</span>
+          </div>
+          <h1 class="class-title">{{current_class.subject.name}}</h1>
+          <div class="class-meta">
+            <div class="class-meta-item">
+              <i class="bi bi-person-fill"></i>
+              <span>{{current_class.subject.teacher}}</span>
             </div>
-            {% endif %}
-          <div class="col-12 col-lg-7">
-            <article class="dashboard-card weather-board shadow-xxl h-100">
-              <div class="weather-main">
-                <div>
-                  <p class="weather-region text-uppercase mb-2">{{city_displayname1}}</p>
-                  <p class="weather-region text-uppercase mb-2">{{city_displayname2}}</p>
-                  <div class="d-flex align-items-center gap-3">
-                    <h2 class="weather-temp mb-0">{{weather_data.main.temp|floatformat:0}}°</h2>
-                    <div class="weather-condition">
-                      <span class="condition-label">{{weather_data.weather.0.main}}</span>
-                      <span class="condition-range">{{weather_data.weather.0.description|title}}</span>
-                      <span class="condition-range">Max {{weather_data.main.temp_max|floatformat:0}}° · Min {{weather_data.main.temp_min|floatformat:0}}°</span>
-                    </div>
-                  </div>
-                  <p class="weather-today mb-0">Feels like {{weather_data.main.feels_like|floatformat:0}}° · Wind speed is at {{windspeed|floatformat:2}} km/h</p>
-                </div>
-                <div class="weather-illustration">
-                  {% with icon=weather_data.weather.0.icon %}
-                    {% if icon == "01d" %}
-                      {# Clear sky (day) #}
-                      <span class="weather-sun"></span>
-                    {% elif icon == "01n" %}
-                      {# Clear sky (night) #}
-                      <span class="weather-moon"></span>
-                      <span class="weather-stars star-1"></span>
-                      <span class="weather-stars star-2"></span>
-                      <span class="weather-stars star-3"></span>
-                      <span class="weather-stars star-4"></span>
-                    {% elif icon == "02d" %}
-                      {# Few clouds (day) #}
-                      <span class="weather-sun"></span>
-                      <span class="weather-cloud-small"></span>
-                    {% elif icon == "02n" %}
-                      {# Few clouds (night) #}
-                      <span class="weather-moon"></span>
-                      <span class="weather-cloud-small"></span>
-                    {% elif icon == "03d" or icon == "03n" %}
-                      {# Scattered clouds #}
-                      <span class="weather-cloud"></span>
-                    {% elif icon == "04d" or icon == "04n" %}
-                      {# Broken clouds #}
-                      <span class="weather-cloud-large"></span>
-                    {% elif icon == "09d" or icon == "09n" %}
-                      {# Shower rain #}
-                      <span class="weather-cloud"></span>
-                      <span class="weather-rain rain-1"></span>
-                      <span class="weather-rain rain-2"></span>
-                      <span class="weather-rain rain-3"></span>
-                    {% elif icon == "10d" %}
-                      {# Rain (day) #}
-                      <span class="weather-sun"></span>
-                      <span class="weather-cloud"></span>
-                      <span class="weather-rain rain-1"></span>
-                      <span class="weather-rain rain-2"></span>
-                      <span class="weather-rain rain-3"></span>
-                    {% elif icon == "10n" %}
-                      {# Rain (night) #}
-                      <span class="weather-moon"></span>
-                      <span class="weather-cloud"></span>
-                      <span class="weather-rain rain-1"></span>
-                      <span class="weather-rain rain-2"></span>
-                      <span class="weather-rain rain-3"></span>
-                    {% elif icon == "11d" or icon == "11n" %}
-                      {# Thunderstorm #}
-                      <span class="weather-cloud-large"></span>
-                      <span class="weather-lightning"></span>
-                      <span class="weather-rain rain-1"></span>
-                      <span class="weather-rain rain-2"></span>
-                      <span class="weather-rain rain-3"></span>
-                    {% elif icon == "13d" or icon == "13n" %}
-                      {# Snow #}
-                      <span class="weather-cloud"></span>
-                      <span class="weather-snow snow-1"></span>
-                      <span class="weather-snow snow-2"></span>
-                      <span class="weather-snow snow-3"></span>
-                      <span class="weather-snow snow-4"></span>
-                      <span class="weather-snow snow-5"></span>
-                    {% elif icon == "50d" or icon == "50n" %}
-                      {# Mist #}
-                      <span class="weather-mist"></span>
-                    {% else %}
-                      {# Default fallback #}
-                      <span class="weather-cloud"></span>
-                    {% endif %}
-                  {% endwith %}
-                </div>
-              </div>
-              {% comment %} <div class="weather-forecast">
-                <h3 class="forecast-heading">Next 3 Classes</h3>
-                <div class="forecast-strip">
-                  <div class="forecast-card">
-                    <span class="forecast-temp">19°</span>
-                    <span class="forecast-day">Mon</span>
-                    <span class="forecast-icon">
-                      <i class="bi bi-cloud-rain-heavy-fill"></i>
-                    </span>
-                    <span class="forecast-class">Robotics Lab · 15:00</span>
-                  </div>
-                  <div class="forecast-card">
-                    <span class="forecast-temp">18°</span>
-                    <span class="forecast-day">Tue</span>
-                    <span class="forecast-icon">
-                      <i class="bi bi-cloud-lightning-rain-fill"></i>
-                    </span>
-                    <span class="forecast-class">Outdoor Physics · 16:00</span>
-                  </div>
-                  <div class="forecast-card">
-                    <span class="forecast-temp">18°</span>
-                    <span class="forecast-day">Wed</span>
-                    <span class="forecast-icon">
-                      <i class="bi bi-cloud-drizzle-fill"></i>
-                    </span>
-                    <span class="forecast-class">Athletics · 17:00</span>
-                  </div>
-                </div>
-              </div> {% endcomment %}
-              <div class="weather-meta">
-                <div class="meta-card">
-                  <span class="meta-label">Humidity & Pressure</span>
-                  <span class="meta-value">{{weather_data.main.humidity}}%</span>
-                  <span class="meta-value">{{weather_data.main.pressure}} hPa</span>
-                </div>
-                <div class="meta-card">
-                  <span class="meta-label">Sunrise</span>
-                  <span class="meta-value">{{sunrise}}</span>
-                  <span class="meta-subtext">Sunset {{sunset}}</span>
-                </div>
-                <div class="meta-card">
-                  <span class="meta-label">Cloudiness</span>
-                  <span class="meta-value">{{weather_data.clouds.all}}%</span>
-                  <span class="meta-subtext"></span>
-                </div>
-              </div>
-            </article>
           </div>
         </div>
-      </section>
+        <div class="class-status">
+          <span class="status-indicator"></span>
+          In progress — {{time_remaining}} minutes remaining
+        </div>
+      </article>
+    </div>
+    {% endif %}
+    <div class="col-12 col-lg-7">
+      <article class="dashboard-card weather-board shadow-xxl h-100">
+        <div class="weather-main">
+          <div>
+            <p class="weather-region text-uppercase mb-2">{{city_displayname1}}</p>
+            <p class="weather-region text-uppercase mb-2">{{city_displayname2}}</p>
+            <div class="d-flex align-items-center gap-3">
+              <h2 class="weather-temp mb-0">{{temperature}}°</h2>
+              <div class="weather-condition">
+                <span class="condition-range">Max {{max_temperature}}°</span>
+                <span class="condition-label">‎</span>
+                <span class="condition-range">Min {{min_temperature}}°</span>
+              </div>
+            </div>
+            <p class="weather-today mb-0">Feels like {{apparent_temperature}}° · Wind speed is at {{windspeed}} km/h</p>
+          </div>
+          <div class="weather-illustration">
+            {% if weather_code == 0 %}
+            {# Clear sky #}
+            {% if is_day %}
+            <span class="weather-sun"></span>
+            {% else %}
+            <span class="weather-moon"></span>
+            <span class="weather-stars star-1"></span>
+            <span class="weather-stars star-2"></span>
+            <span class="weather-stars star-3"></span>
+            <span class="weather-stars star-4"></span>
+            {% endif %}
+            {% elif weather_code == 1 %}
+            {# Mainly clear #}
+            {% if is_day %}
+            <span class="weather-sun"></span>
+            {% else %}
+            <span class="weather-moon"></span>
+            {% endif %}
+            <span class="weather-cloud-small"></span>
+            {% elif weather_code == 2 %}
+            {# Partly cloudy #}
+            <span class="weather-cloud"></span>
+            {% elif weather_code == 3 %}
+            {# Overcast #}
+            <span class="weather-cloud-large"></span>
+            {% elif weather_code == 45 or weather_code == 48 %}
+            {# Fog #}
+            <span class="weather-mist"></span>
+            {% elif weather_code >= 51 and weather_code <= 67 or weather_code >= 80 and weather_code <= 82 %}
+            {# Rain / Drizzle #}
+            {% if weather_code <= 55 %}
+            {# Light rain/drizzle: show sun/moon #}
+            {% if is_day %}
+            <span class="weather-sun"></span>
+            {% else %}
+            <span class="weather-moon"></span>
+            {% endif %}
+            {% endif %}
+            <span class="weather-cloud"></span>
+            <span class="weather-rain rain-1"></span>
+            <span class="weather-rain rain-2"></span>
+            <span class="weather-rain rain-3"></span>
+            {% elif weather_code >= 71 and weather_code <= 86 %}
+            {# Snow #}
+            <span class="weather-cloud"></span>
+            <span class="weather-snow snow-1"></span>
+            <span class="weather-snow snow-2"></span>
+            <span class="weather-snow snow-3"></span>
+            <span class="weather-snow snow-4"></span>
+            <span class="weather-snow snow-5"></span>
+            {% elif weather_code >= 95 %}
+            {# Thunderstorm #}
+            <span class="weather-cloud-large"></span>
+            <span class="weather-lightning"></span>
+            <span class="weather-rain rain-1"></span>
+            <span class="weather-rain rain-2"></span>
+            <span class="weather-rain rain-3"></span>
+            {% else %}
+            {# Fallback #}
+            <span class="weather-cloud"></span>
+            {% endif %}
+          </div>
+        </div>
+        <div class="weather-meta">
+          <div class="meta-card">
+            <span class="meta-label">Humidity</span>
+            <span class="meta-value">{{humidity}}%</span>
+          </div>
+          <div class="meta-card">
+            <span class="meta-label">Dew Point</span>
+            <span class="meta-value">{{dew_point}}</span>
+          </div>
+          <div class="meta-card meta-card-precipitation">
+            <span class="meta-label">Precipitation</span>
+            <div class="precipitation-split">
+              <div class="precipitation-item">
+                <span class="meta-subtext">Probability</span>
+                <span class="meta-value">{{precipitation_probability}}%</span>
+              </div>
+              <div class="precipitation-divider"></div>
+              <div class="precipitation-item">
+                <span class="meta-subtext">Sum</span>
+                <span class="meta-value">{{precipitation_sum}} mm</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
 {% endblock %}
