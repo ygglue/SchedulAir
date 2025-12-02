@@ -8,4 +8,29 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
+document.addEventListener("DOMContentLoaded", () => {
+    
+    const editForm = document.getElementById("editProfileForm");
+
+    editForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        fetch("/account/edit/", {
+            method: "POST",
+            body: new FormData(editForm),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                alert("Profile updated successfully!");
+
+                location.reload();
+            } else {
+                console.log(data.errors);
+                alert("Error updating profile.");
+            }
+        });
+    });
+
+});
 
