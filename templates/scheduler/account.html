@@ -26,11 +26,18 @@
       <div class="col-lg-6">
         <div class="dashboard-card weather-board shadow-xxl h-100">
           <div class="d-flex align-items-start gap-3 mb-4">
-            <div class="avatar-circle">
-              <span>EK</span>
+            <div class="avatar-circle d-flex justify-content-center align-items-center rounded-circle border border-3 border-light" style="width:40px; height:40px; margin-right: 20px;">
+              <span>
+                {% if request.user.first_name and request.user.last_name %}
+                    {{ request.user.first_name|first|upper }}{{ request.user.last_name|first|upper }}
+                {% else %}
+                    {{ request.user.username|slice:":2"|upper }}
+                {% endif %}
+              </span>
             </div>
             <div class="flex-grow-1">
               <h2 class="h4 text-white mb-1">{{ request.user.username }}</h2>
+              <p class="text-muted-80 mb-2">{{ request.user.first_name }} {{ request.user.last_name }}</p>
               <p class="text-muted-80 mb-2">{{ request.user.email }}</p>
             </div>
           </div>
@@ -92,6 +99,50 @@
     </div>
   </div>
 </div>
+
+<!-- Edit Profile Modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header border-0 pb-2">
+        <h5 class="modal-title text-white">Edit Profile</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      
+      <div class="modal-body">
+        <form id="editProfileForm" method="POST">
+          {% csrf_token %}
+
+          <div class="mb-3">
+            <label class="form-label">Username</label>
+            <input type="text" name="username" class="form-control" value="{{ request.user.username }}">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" name="email" class="form-control" value="{{ request.user.email }}">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">First Name</label>
+            <input type="text" name="first_name" class="form-control" value="{{ request.user.first_name }}">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Last Name</label>
+            <input type="text" name="last_name" class="form-control" value="{{ request.user.last_name }}">
+          </div>
+
+        </form>
+      </div>
+
+      <div class="modal-footer border-0">
+        <button type="submit" form="editProfileForm" class="btn btn-gradient rounded-pill px-4">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
 
 {% block scripts %}

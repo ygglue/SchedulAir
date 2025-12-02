@@ -8,6 +8,7 @@ from .models import Subject, ClassSchedule
 from .services import get_weather_forecast, get_time_remaining, get_icon_url
 import os, requests
 from django.core.cache import cache
+from .forms import EditProfileForm
 
 @login_required
 def home(request):
@@ -342,3 +343,15 @@ def get_time_remaining(obj):
 
     # No negative minutes
     return max(minutes, 0)
+
+@login_required
+def edit_profile_ajax(request):
+    if request.method == "POST":
+        form = EditProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({"status": "success"})
+        else:
+            return JsonResponse({"status": "error", "errors": form.errors})
+
+    return JsonResponse({"status": "invalid"})

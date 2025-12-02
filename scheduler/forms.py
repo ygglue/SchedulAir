@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import fields, widgets
 from .models import ClassSchedule, Subject
+from django.contrib.auth.models import User
 
 class SubjectForm(forms.ModelForm):
     class Meta:
@@ -29,3 +30,8 @@ class ClassScheduleForm(forms.ModelForm):
 
         if user is not None:
             self.fields['subject'].queryset = Subject.objects.filter(user=user)
+
+class EditProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name']
