@@ -7,11 +7,8 @@ from django.contrib.auth.decorators import login_required
 from .models import Subject, ClassSchedule
 from .services import get_weather_forecast, get_time_remaining, get_icon_url
 import os, requests
-<<<<<<< HEAD
 from django.core.cache import cache
-=======
 from .forms import EditProfileForm
->>>>>>> 2ab8fd8b93b39c2ac7f25d3952baa76776aeee25
 
 @login_required
 def home(request):
