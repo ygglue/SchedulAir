@@ -351,8 +351,33 @@
     }
   });
 
+  // Load correct image based on screen size for all carousel items
+  function loadCorrectImages() {
+    const isMobile = window.innerWidth < 768;
+    const allImages = document.querySelectorAll('.screenshot-preview[data-screenshot-img]');
+    
+    allImages.forEach((img) => {
+      const card = img.closest('.screenshot-card');
+      if (!card) return;
+      
+      const imageUrl = getImageUrl(card);
+      if (imageUrl && !imageUrl.includes('None')) {
+        // Set the image source
+        img.src = imageUrl;
+      }
+    });
+  }
+
+  // Load correct images first (before cloning)
+  loadCorrectImages();
+  
   // Initialize infinite scroll
   setupInfiniteScroll();
+  
+  // Load images again after cloning (for cloned items)
+  setTimeout(() => {
+    loadCorrectImages();
+  }, 150);
   
   // Attach card click handlers after cloning
   attachCardClicks();
@@ -360,5 +385,14 @@
   // Update indicators on load
   updateIndicators();
   updateButtons();
+
+  // Reload images on window resize
+  let resizeImageTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeImageTimeout);
+    resizeImageTimeout = setTimeout(() => {
+      loadCorrectImages();
+    }, 250);
+  });
 })();
 

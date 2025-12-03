@@ -61,7 +61,7 @@
               A smart scheduling app that integrates school timetables with real-time weather data. It helps students and teachers plan their days more effectively, from knowing when to bring an umbrella to optimizing outdoor classes.
             </p>
             <div class="d-flex flex-wrap gap-3 justify-content-center">
-              <a href="{% url 'account_login' %}" class="btn btn-gradient rounded-pill px-5 py-3" style="font-size: 1.1rem; font-weight: 600;">Get Started</a>
+              <a href="{% url 'account_login' %}" class="btn btn-gradient rounded-pill px-5 py-3" style="font-size: 1.1rem; font-weight: 600; min-height: 48px; display: inline-flex; align-items: center; justify-content: center;">Get Started</a>
             </div>
           </div>
         </div>
@@ -153,9 +153,9 @@
                 <div class="carousel-container">
                   <!-- Screenshot Item 1 -->
                   <div class="carousel-item" data-index="0">
-                    <div class="screenshot-card" data-desktop-img="{% static 'img/screenshots/dashboard-desktop.png' %}" data-mobile-img="{% static 'img/screenshots/dashboard-mobile.png' %}">
+                    <div class="screenshot-card" data-desktop-img="{% static 'img/screenshots/dashboard-desktop.png' %}" data-mobile-img="{% static 'img/screenshots/dashboard-mobile.jpg' %}">
                       <div class="screenshot-image-placeholder">
-                        <img src="{% static 'img/screenshots/dashboard-desktop.png' %}" alt="Dashboard View" class="screenshot-preview" onload="this.nextElementSibling.classList.add('hidden');" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                        <img src="" alt="Dashboard View" class="screenshot-preview" data-screenshot-img onload="this.nextElementSibling.classList.add('hidden');" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
                         <div class="screenshot-placeholder hidden">
                           <i class="bi bi-house-door"></i>
                           <p class="mt-3 mb-0">Dashboard View</p>
@@ -165,9 +165,9 @@
                   </div>
                   <!-- Screenshot Item 2 -->
                   <div class="carousel-item" data-index="1">
-                    <div class="screenshot-card" data-desktop-img="{% static 'img/screenshots/editor-desktop.png' %}" data-mobile-img="{% static 'img/screenshots/editor-mobile.png' %}">
+                    <div class="screenshot-card" data-desktop-img="{% static 'img/screenshots/editor-desktop.png' %}" data-mobile-img="{% static 'img/screenshots/editor-desktop.png' %}">
                       <div class="screenshot-image-placeholder">
-                        <img src="{% static 'img/screenshots/editor-desktop.png' %}" alt="Schedule Editor" class="screenshot-preview" onload="this.nextElementSibling.classList.add('hidden');" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                        <img src="" alt="Schedule Editor" class="screenshot-preview" data-screenshot-img onload="this.nextElementSibling.classList.add('hidden');" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
                         <div class="screenshot-placeholder hidden">
                           <i class="bi bi-pencil-square"></i>
                           <p class="mt-3 mb-0">Schedule Editor</p>
@@ -177,9 +177,9 @@
                   </div>
                   <!-- Screenshot Item 3 -->
                   <div class="carousel-item" data-index="2">
-                    <div class="screenshot-card" data-desktop-img="{% static 'img/screenshots/weather-desktop.png' %}" data-mobile-img="{% static 'img/screenshots/weather-mobile.png' %}">
+                    <div class="screenshot-card" data-desktop-img="{% static 'img/screenshots/weather-desktop.png' %}" data-mobile-img="{% static 'img/screenshots/weather-desktop.png' %}">
                       <div class="screenshot-image-placeholder">
-                        <img src="{% static 'img/screenshots/weather-desktop.png' %}" alt="Weather Details" class="screenshot-preview" onload="this.nextElementSibling.classList.add('hidden');" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                        <img src="" alt="Weather Details" class="screenshot-preview" data-screenshot-img onload="this.nextElementSibling.classList.add('hidden');" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
                         <div class="screenshot-placeholder hidden">
                           <i class="bi bi-cloud-drizzle"></i>
                           <p class="mt-3 mb-0">Weather Details</p>

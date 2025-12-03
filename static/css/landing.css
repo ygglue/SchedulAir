@@ -13,6 +13,10 @@ body {
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Improve touch scrolling on mobile */
+  -webkit-overflow-scrolling: touch;
 }
 
 .landing-container {
@@ -24,6 +28,32 @@ body {
   padding: 2rem;
   position: relative;
   z-index: 1;
+  width: 100%;
+  box-sizing: border-box;
+  /* Ensure children can break out properly */
+  overflow-x: hidden;
+}
+
+/* Desktop padding - add more horizontal padding on larger screens */
+@media (min-width: 992px) {
+  .landing-container {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .landing-container {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+}
+
+@media (min-width: 1400px) {
+  .landing-container {
+    padding-left: 16rem;
+    padding-right: 16rem;
+  }
 }
 
 /* Background Weather Graphics */
@@ -36,6 +66,8 @@ body {
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
+  /* Prevent horizontal overflow on mobile */
+  max-width: 100vw;
 }
 
 /* Clouds */
@@ -291,6 +323,17 @@ body {
   animation: fadeInUp 0.8s ease-out;
 }
 
+/* Ensure buttons have proper touch targets on mobile */
+.btn {
+  min-height: 44px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
+}
+
+.btn-gradient {
+  min-height: 48px;
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -315,6 +358,12 @@ body {
 .features-section {
   position: relative;
   z-index: 2;
+  width: 100%;
+}
+
+.features-section .container {
+  width: 100%;
+  max-width: 100%;
 }
 
 .feature-card {
@@ -394,14 +443,19 @@ body {
   padding: 4rem 0;
   margin-top: 0;
   overflow: visible;
+  width: 100%;
 }
 
 .screenshots-section .container {
   overflow: visible;
+  width: 100%;
+  max-width: 100%;
 }
 
 .screenshots-section .row {
   overflow: visible;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .screenshots-section h2,
@@ -421,19 +475,7 @@ body {
   margin: 2rem 0;
 }
 
-@media (max-width: 768px) {
-  .custom-carousel {
-    padding: 2rem 1rem;
-  }
-  
-  .carousel-btn-prev {
-    left: -0.5rem;
-  }
-  
-  .carousel-btn-next {
-    right: -0.5rem;
-  }
-}
+/* Carousel mobile styles are now handled in the main mobile responsive section */
 
 .carousel-container {
   display: flex;
@@ -452,6 +494,9 @@ body {
   position: relative;
   width: 100%;
   scroll-padding: 0 2rem;
+  /* Improve touch scrolling on mobile */
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;
 }
 
 .carousel-container::-webkit-scrollbar {
@@ -533,6 +578,8 @@ body {
   position: relative;
   z-index: 1;
   border-radius: 20px;
+  /* Ensure images don't cause overflow */
+  max-width: 100%;
 }
 
 .screenshot-preview[style*="display: none"] {
@@ -863,6 +910,36 @@ body {
   margin-top: 5rem;
   padding: 4rem 2rem;
   overflow: hidden;
+  box-sizing: border-box;
+  /* Break out of container constraints to fill landing-container width */
+  margin-left: -2rem;
+  margin-right: -2rem;
+  width: calc(100% + 4rem);
+}
+
+/* Adjust footer width based on landing-container padding on desktop */
+@media (min-width: 992px) {
+  .footer-section {
+    margin-left: -4rem;
+    margin-right: -4rem;
+    width: calc(100% + 8rem);
+  }
+}
+
+@media (min-width: 1200px) {
+  .footer-section {
+    margin-left: -5rem;
+    margin-right: -5rem;
+    width: calc(100% + 10rem);
+  }
+}
+
+@media (min-width: 1400px) {
+  .footer-section {
+    margin-left: -16rem;
+    margin-right: -16rem;
+    width: calc(100% + 32rem);
+  }
 }
 
 .footer-section h3,
@@ -962,59 +1039,285 @@ body {
 
 /* Mobile Responsive Styles */
 @media (max-width: 768px) {
+  /* Prevent horizontal scrolling */
+  html, body {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
   .landing-container {
-    padding: 1rem;
+    padding: 1rem 0.75rem;
     min-height: 100vh;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    width: 100%;
+    box-sizing: border-box;
+    /* Ensure footer can be properly centered */
+    position: relative;
   }
 
   .container {
     width: 100%;
     max-width: 100%;
-    padding: 0;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    box-sizing: border-box;
   }
 
+  /* Hero Section Mobile Optimizations */
   .hero-section {
-    padding: 2rem 0;
+    padding: 2.5rem 0 3rem 0;
+    text-align: center;
   }
 
   .hero-section h1 {
-    font-size: 2.5rem !important;
+    font-size: 2.25rem !important;
+    line-height: 1.1 !important;
+    margin-bottom: 1.25rem !important;
+    padding: 0 0.5rem;
   }
 
   .hero-section .lead {
     font-size: 1rem !important;
+    line-height: 1.5 !important;
+    padding: 0 0.5rem;
+    margin-bottom: 2rem !important;
+  }
+
+  .hero-section .btn {
+    font-size: 1rem !important;
+    padding: 0.875rem 2rem !important;
+    width: auto;
+    min-width: 200px;
+  }
+
+  /* Features Section Mobile Optimizations */
+  .features-section {
+    padding: 3rem 0 !important;
+    margin-top: 2rem !important;
+  }
+
+  .features-section h2 {
+    font-size: 2rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .features-section .lead {
+    font-size: 0.95rem !important;
+    margin-bottom: 2rem !important;
   }
 
   .feature-card {
-    padding: 1.5rem;
+    padding: 1.5rem 1.25rem;
+    margin-bottom: 1rem;
   }
 
   .feature-icon {
-    width: 60px;
-    height: 60px;
-    font-size: 1.75rem;
+    width: 56px;
+    height: 56px;
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
   }
 
+  .feature-card h3 {
+    font-size: 1.1rem !important;
+    margin-bottom: 0.75rem !important;
+  }
 
+  .feature-card p {
+    font-size: 0.9rem !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Screenshots Carousel Mobile Optimizations */
+  .screenshots-section {
+    padding: 3rem 0 !important;
+    margin-top: 2rem !important;
+  }
+
+  .screenshots-section h2 {
+    font-size: 2rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .screenshots-section .lead {
+    font-size: 0.95rem !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .custom-carousel {
+    padding: 1.5rem 0.5rem !important;
+    margin: 1.5rem 0 !important;
+  }
+
+  .carousel-container {
+    padding: 2rem 1rem !important;
+    min-height: 400px !important;
+    scroll-padding: 0 1rem;
+  }
+
+  .carousel-item {
+    flex: 0 0 calc(100% - 2rem) !important;
+    padding: 0 1rem !important;
+    margin: 0 0.5rem !important;
+    min-height: 400px !important;
+  }
+
+  .screenshot-card {
+    height: 400px !important;
+    border-radius: 16px !important;
+  }
+
+  .carousel-btn {
+    width: 44px !important;
+    height: 44px !important;
+    font-size: 1.5rem !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 50% !important;
+  }
+
+  .carousel-btn-prev {
+    left: 0.25rem !important;
+  }
+
+  .carousel-btn-next {
+    right: 0.25rem !important;
+  }
+
+  .carousel-btn:hover {
+    background: rgba(255, 255, 255, 0.25) !important;
+    transform: translateY(-50%) scale(1.05) !important;
+  }
+
+  .carousel-indicators {
+    margin-top: 1.5rem;
+    gap: 0.5rem;
+  }
+
+  .carousel-indicators .indicator {
+    width: 10px;
+    height: 10px;
+  }
+
+  /* Footer Mobile Optimizations */
   .footer-section {
-    margin-top: 3rem;
+    margin-top: 3rem !important;
+    padding: 3rem 1.5rem 2rem 1.5rem !important;
+    border-radius: 24px 24px 0 0 !important;
+    /* Break out to fill landing-container width on mobile - properly centered */
+    /* Use transform to center while breaking out */
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: calc(100% + 1.5rem) !important;
+    transform: translateX(-0.75rem);
+    /* Ensure footer is properly positioned and centered */
+    box-sizing: border-box;
+    align-self: stretch;
   }
 
-  .social-links {
-    justify-content: center;
+  .footer-section .container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    box-sizing: border-box;
+  }
+
+  .footer-section h3 {
+    font-size: 1.5rem !important;
+    margin-bottom: 1rem !important;
+    text-align: center;
+  }
+
+  .footer-section h4 {
+    font-size: 1.1rem !important;
+    margin-bottom: 1rem !important;
+    text-align: center;
   }
 
   .footer-section .col-12 {
     text-align: center;
+    margin-bottom: 2rem;
   }
 
-  .footer-links,
+  .footer-section .col-12:last-child {
+    margin-bottom: 0;
+  }
+
+  .footer-section p {
+    font-size: 0.9rem !important;
+    text-align: center;
+  }
+
+  .social-links {
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+  }
+
+  .social-link {
+    width: 42px;
+    height: 42px;
+    font-size: 1.1rem;
+  }
+
+  .footer-links {
+    text-align: center;
+    list-style: none;
+    padding: 0;
+  }
+
+  .footer-links li {
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-links a {
+    font-size: 0.9rem;
+  }
+
   .contact-list {
-    text-align: left;
+    text-align: center;
+    align-items: center;
   }
 
+  .contact-list li {
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .contact-list i {
+    font-size: 1.1rem;
+  }
+
+  .footer-divider {
+    margin: 2rem 0 1.5rem 0;
+  }
+
+  .footer-section .text-center p {
+    font-size: 0.85rem !important;
+  }
+
+  /* Background Weather Graphics - Reduce on Mobile for Performance */
+  .bg-cloud {
+    opacity: 0.4;
+  }
+
+  .bg-rain {
+    opacity: 0.5;
+  }
+
+  .bg-wind {
+    opacity: 0.3;
+  }
+
+  /* Auth Form Mobile Styles */
   .dashboard-card {
     padding: 1.5rem !important;
     border-radius: 24px !important;
@@ -1077,14 +1380,139 @@ body {
 
 @media (max-width: 576px) {
   .landing-container {
-    padding: 0.75rem;
+    padding: 0.5rem;
+  }
+
+  /* Hero Section Extra Small Mobile */
+  .hero-section {
+    padding: 2rem 0 2.5rem 0;
   }
 
   .hero-section h1 {
-    font-size: 2rem !important;
+    font-size: 1.875rem !important;
+    margin-bottom: 1rem !important;
   }
 
+  .hero-section .lead {
+    font-size: 0.95rem !important;
+    margin-bottom: 1.75rem !important;
+  }
 
+  .hero-section .btn {
+    font-size: 0.95rem !important;
+    padding: 0.75rem 1.75rem !important;
+    min-width: 180px;
+  }
+
+  /* Features Extra Small Mobile */
+  .features-section {
+    padding: 2.5rem 0 !important;
+  }
+
+  .features-section h2 {
+    font-size: 1.75rem !important;
+  }
+
+  .feature-card {
+    padding: 1.25rem 1rem;
+  }
+
+  .feature-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.35rem;
+  }
+
+  .feature-card h3 {
+    font-size: 1rem !important;
+  }
+
+  .feature-card p {
+    font-size: 0.875rem !important;
+  }
+
+  /* Carousel Extra Small Mobile */
+  .screenshots-section {
+    padding: 2.5rem 0 !important;
+  }
+
+  .screenshots-section h2 {
+    font-size: 1.75rem !important;
+  }
+
+  .custom-carousel {
+    padding: 1rem 0.25rem !important;
+  }
+
+  .carousel-container {
+    padding: 1.5rem 0.5rem !important;
+    min-height: 350px !important;
+  }
+
+  .carousel-item {
+    flex: 0 0 calc(100% - 1rem) !important;
+    padding: 0 0.5rem !important;
+    margin: 0 0.25rem !important;
+    min-height: 350px !important;
+  }
+
+  .screenshot-card {
+    height: 350px !important;
+    border-radius: 12px !important;
+  }
+
+  .carousel-btn {
+    width: 40px !important;
+    height: 40px !important;
+    font-size: 1.25rem !important;
+  }
+
+  .carousel-btn-prev {
+    left: 0 !important;
+  }
+
+  .carousel-btn-next {
+    right: 0 !important;
+  }
+
+  /* Footer Extra Small Mobile */
+  .footer-section {
+    padding: 2.5rem 1rem 1.5rem 1rem !important;
+    /* Break out to fill landing-container width on extra small mobile - properly centered */
+    /* Use transform to center while breaking out */
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: calc(100% + 1rem) !important;
+    transform: translateX(-0.5rem);
+    /* Ensure footer is properly positioned and centered */
+    box-sizing: border-box;
+    align-self: stretch;
+  }
+
+  .footer-section .container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    box-sizing: border-box;
+  }
+
+  .footer-section h3 {
+    font-size: 1.35rem !important;
+  }
+
+  .footer-section h4 {
+    font-size: 1rem !important;
+  }
+
+  .social-link {
+    width: 38px;
+    height: 38px;
+    font-size: 1rem;
+  }
+
+  /* Auth Form Extra Small Mobile */
   .dashboard-card {
     padding: 1.25rem !important;
     border-radius: 20px !important;
