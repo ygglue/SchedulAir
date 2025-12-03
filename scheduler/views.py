@@ -5,7 +5,7 @@ from django.utils import timezone
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from .models import Subject, ClassSchedule
-from .services import get_weather_forecast, get_time_remaining, get_icon_url
+from .services import get_weather_forecast, get_time_remaining, get_icon_data
 import os, requests
 from django.core.cache import cache
 from .forms import EditProfileForm
@@ -16,7 +16,7 @@ def home(request):
     display_name = user_city[0].split(', ', 1)
     now = timezone.localtime().time()
     current_hour = int(now.strftime('%I').lstrip('0'))
-    current_day = int(datetime.now().weekday())
+    current_day_abbr_caps = datetime.now().strftime("%a").upper()
     is_day = 6 <= current_hour < 18
     weather_data = get_weather_forecast(user_city[1], user_city[2])
 
@@ -37,8 +37,12 @@ def home(request):
     class_sched = ClassSchedule.objects.filter(
         start_time__lte=now,
         end_time__gte=now,
+        day_of_week=current_day_abbr_caps
     )
 
+    print('Current Day: ',current_day_abbr_caps)
+    print(class_sched)
+    
     if class_sched.exists():
         current_class = class_sched.first()
         time_remaining = get_time_remaining(current_class)
@@ -135,7 +139,7 @@ def editor(request):
     is_day = 6 <= current_hour < 18
     weather_data = get_weather_forecast(user_city[1], user_city[2])
     weather_code = weather_data['daily'].get('weather_code')
-    weather_icons=get_icon_url(current_day=current_day, weather_code=weather_code, is_day=is_day)
+    weather_icon_data=get_icon_data(current_day=current_day, weather_code=weather_code, is_day=is_day)
 
     # Handle GET request for fetching class details
     if request.method == 'GET' and request.headers.get('x-requested-with') == 'XMLHttpRequest' and 'getClass' in request.GET:
@@ -295,7 +299,7 @@ def editor(request):
     current_date = datetime.now().strftime("%A, %B %d")
     current_day_abbr = datetime.now().strftime("%a")
     subjects = Subject.objects.filter(user=request.user)
-    days_of_week = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+    days_of_week = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" ]
     sun_classes = ClassSchedule.objects.filter(day_of_week="SUN", subject__user=request.user).order_by('start_time')
     mon_classes = ClassSchedule.objects.filter(day_of_week="MON", subject__user=request.user).order_by('start_time')
     tue_classes = ClassSchedule.objects.filter(day_of_week="TUE", subject__user=request.user).order_by('start_time')
@@ -315,34 +319,10 @@ def editor(request):
         'thu_classes': thu_classes,
         'fri_classes': fri_classes,
         'sat_classes': sat_classes,
-        'weather_icons': weather_icons,
+        'weather_icons': weather_icon_data[0],
+        'weather_descriptions': weather_icon_data[1],
         'week_iterable': range(7)
     })
-
-
-def get_time_remaining(obj):
-    now = timezone.localtime().time()
-    today = timezone.localdate()
-
-    now_dt = datetime.combine(today, now)
-
-    # If event crosses midnight (e.g., 22:00 → 02:00)
-    if obj.end_time < obj.start_time:
-        # end_time is tomorrow
-        end_dt = datetime.combine(today + datetime.timedelta(days=1), obj.end_time)
-    else:
-        end_dt = datetime.combine(today, obj.end_time)
-
-    remaining = end_dt - now_dt
-
-    # If time already passed today, remaining will be negative
-    if remaining.total_seconds() < 0:
-        return datetime.timedelta(0)
-
-    minutes = int(remaining.total_seconds() // 60)
-
-    # No negative minutes
-    return max(minutes, 0)
 
 @login_required
 def edit_profile_ajax(request):

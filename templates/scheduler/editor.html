@@ -36,32 +36,12 @@ Schedule Editor
     </div>
     <div class="week-schedule-grid">
       <div class="day-column">
-        {% if current_day_abbr == "Sun" %}
-          <div class="week-day-header d-lg-none mb-3 active">Sun</div>
-        {% else %}
-          <div class="week-day-header d-lg-none mb-3">Sun
-            {% if weather_icons.6 != "" %}
-              <img class="weather-icon" src="{{weather_icons.6}}" alt="weather-icon-img">
-            {% endif %}
-          </div>
-        {% endif %}
-        {% if sun_classes %}
-          {% for class in sun_classes %}
-            <div class="class-block block-purple" data-duration="2h" data-class-id="{{ class.id }}" data-day="SUN" data-start="{{ class.start_time|time:'H:i' }}" data-end="{{ class.end_time|time:'H:i' }}" data-bs-toggle="modal" data-bs-target="#editModal">
-              <div class="class-time">{{ class.start_time|time:"g:i A" }} - {{ class.end_time|time:"g:i A" }}</div>
-              <div class="class-name">{{ class.subject.name }}</div>
-            </div>
-          {% endfor %}
-        {% else %}
-          <div class="class-empty">No classes</div>
-        {% endif %}
-      </div>
-      <div class="day-column">
         {% if current_day_abbr == "Mon" %}
           <div class="week-day-header d-lg-none mb-3 active">Mon</div>
         {% else %}
           <div class="week-day-header d-lg-none mb-3">Mon
             {% if weather_icons.0 != "" %}
+            | {{weather_descriptions.0}}
               <img class="weather-icon" src="{{weather_icons.0}}" alt="weather-icon-img">
             {% endif %}
           </div>
@@ -83,6 +63,7 @@ Schedule Editor
         {% else %}
           <div class="week-day-header d-lg-none mb-3">Tue
             {% if weather_icons.1 != "" %}
+            | {{weather_descriptions.1}}
               <img class="weather-icon" src="{{weather_icons.1}}" alt="weather-icon-img">
             {% endif %}
           </div>
@@ -104,6 +85,7 @@ Schedule Editor
         {% else %}
           <div class="week-day-header d-lg-none mb-3">Wed
             {% if weather_icons.2 != "" %}
+            | {{weather_descriptions.2}}
               <img class="weather-icon" src="{{weather_icons.2}}" alt="weather-icon-img">
             {% endif %}
           </div>
@@ -125,6 +107,7 @@ Schedule Editor
         {% else %}
           <div class="week-day-header d-lg-none mb-3">Thu
             {% if weather_icons.3 != "" %}
+            | {{weather_descriptions.3}}
               <img class="weather-icon" src="{{weather_icons.3}}" alt="weather-icon-img">
             {% endif %}
           </div>
@@ -146,6 +129,7 @@ Schedule Editor
         {% else %}
           <div class="week-day-header d-lg-none mb-3">Fri
             {% if weather_icons.4 != "" %}
+            | {{weather_descriptions.4}}
               <img class="weather-icon" src="{{weather_icons.4}}" alt="weather-icon-img">
             {% endif %}
           </div>
@@ -167,6 +151,7 @@ Schedule Editor
         {% else %}
           <div class="week-day-header d-lg-none mb-3">Sat
             {% if weather_icons.5 != "" %}
+            | {{weather_descriptions.5}}
               <img class="weather-icon" src="{{weather_icons.5}}" alt="weather-icon-img">
             {% endif %}
           </div>
@@ -174,6 +159,28 @@ Schedule Editor
         {% if sat_classes %}
           {% for class in sat_classes %}
             <div class="class-block block-purple" data-duration="2h" data-class-id="{{ class.id }}" data-day="SAT" data-start="{{ class.start_time|time:'H:i' }}" data-end="{{ class.end_time|time:'H:i' }}" data-bs-toggle="modal" data-bs-target="#editModal">
+              <div class="class-time">{{ class.start_time|time:"g:i A" }} - {{ class.end_time|time:"g:i A" }}</div>
+              <div class="class-name">{{ class.subject.name }}</div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="class-empty">No classes</div>
+        {% endif %}
+      </div>
+      <div class="day-column">
+        {% if current_day_abbr == "Sun" %}
+          <div class="week-day-header d-lg-none mb-3 active">Sun</div>
+        {% else %}
+          <div class="week-day-header d-lg-none mb-3">Sun
+            {% if weather_icons.6 != "" %}
+              | {{weather_descriptions.6}}
+              <img class="weather-icon" src="{{weather_icons.6}}" alt="weather-icon-img">
+            {% endif %}
+          </div>
+        {% endif %}
+        {% if sun_classes %}
+          {% for class in sun_classes %}
+            <div class="class-block block-purple" data-duration="2h" data-class-id="{{ class.id }}" data-day="SUN" data-start="{{ class.start_time|time:'H:i' }}" data-end="{{ class.end_time|time:'H:i' }}" data-bs-toggle="modal" data-bs-target="#editModal">
               <div class="class-time">{{ class.start_time|time:"g:i A" }} - {{ class.end_time|time:"g:i A" }}</div>
               <div class="class-name">{{ class.subject.name }}</div>
             </div>

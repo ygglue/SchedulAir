@@ -575,6 +575,7 @@ footer {
 
 .weather-icon {
   transform: scale(2) translate(2px, 0px);
+  filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.7));
   height: 25px;
   width: 25px;
 }

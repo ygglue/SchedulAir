@@ -4,80 +4,80 @@
   Account
 {% endblock %}
 {% block content %}
-  <section class="container account-container">
-    <div class="dashboard-card weather-board shadow-xxl h-100 mb-4">
-      <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center">
-        <div>
-          <h1 class="account-page-title">Account</h1>
-          <p class="account-page-subtitle">Manage your profile and preferences</p>
+<section class="container account-container">
+  <div class="dashboard-card weather-board shadow-xxl h-100 mb-4">
+    <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center">
+      <div>
+        <h1 class="account-page-title">Account</h1>
+        <p class="account-page-subtitle">Manage your profile and preferences</p>
+      </div>
+      <div class="d-flex flex-wrap gap-2">
+        {% if request.user.is_authenticated %}
+          <a href="{% url 'account_logout' %}"><button type="button" class="btn btn-outline-light rounded-pill px-3"><i class="bi bi-box-arrow-in-right me-1"></i>Logout</button></a>
+        {% else %}
+          <button type="button" class="btn btn-outline-light rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#loginModal"><i class="bi bi-box-arrow-in-right me-1"></i>Login</button>
+        {% endif %}
+        <button type="button" class="btn btn-gradient rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#editProfileModal"><i class="bi bi-pencil-square me-1"></i>Edit Profile</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-6">
+      <div class="dashboard-card weather-board shadow-xxl h-100">
+        <div class="d-flex align-items-start gap-3 mb-4">
+          <div class="avatar-circle d-flex justify-content-center align-items-center rounded-circle border border-3 border-light" style="width:40px; height:40px; margin-right: 20px;">
+            <span>
+              {% if request.user.first_name and request.user.last_name %}
+                  {{ request.user.first_name|first|upper }}{{ request.user.last_name|first|upper }}
+              {% else %}
+                  {{ request.user.username|slice:":2"|upper }}
+              {% endif %}
+            </span>
+          </div>
+          <div class="flex-grow-1">
+            <h2 class="h4 text-white mb-1">{{ request.user.username }}</h2>
+            <p class="text-muted-80 mb-2">{{ request.user.first_name }} {{ request.user.last_name }}</p>
+            <p class="text-muted-80 mb-2">{{ request.user.email }}</p>
+          </div>
         </div>
-        <div class="d-flex flex-wrap gap-2">
-          {% if request.user.is_authenticated %}
-            <a href="{% url 'account_logout' %}"><button type="button" class="btn btn-outline-light rounded-pill px-3"><i class="bi bi-box-arrow-in-right me-1"></i>Logout</button></a>
-          {% else %}
-            <button type="button" class="btn btn-outline-light rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#loginModal"><i class="bi bi-box-arrow-in-right me-1"></i>Login</button>
-          {% endif %}
-          <button type="button" class="btn btn-gradient rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#editProfileModal"><i class="bi bi-pencil-square me-1"></i>Edit Profile</button>
+        {% comment %} <div class="account-info-item">
+          <div class="info-label">Role</div>
+          <div class="info-value">Department Lead</div>
+        </div>
+        <div class="account-info-item">
+          <div class="info-label">Two-factor authentication</div>
+          <div class="info-value">
+            <span class="text-success">Enabled</span>
+            <a href="#" class="link-light text-decoration-none ms-2">Manage</a>
+          </div>
+        </div> {% endcomment %}
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="dashboard-card weather-board shadow-xxl h-100">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+          <h3 class="h5 text-white mb-0">Location Preferences</h3>
+          <i class="bi bi-geo-fill text-accent fs-4"></i>
+        </div>
+        <div class="account-info-item">
+          <form method="get" class="row g-3">
+            <div class="info-value">{{user_city}}</div>
+            <div class="col-12">
+              <input id="locationInput" type="text" class="form-control-lg w-100" placeholder="Search for your city..." autocomplete="off" name="locationInput"/>
+            </div>
+          </form>
+        </div>
+        <div class="account-info-item">
+          {% for city in cities %}
+            <div class="forecast-card" data-city="{{ city.display_name}}|{{city.lat}}|{{city.lon}}" data-bs-toggle="modal" data-bs-target="#locationModal">
+              {{ city.display_name}}
+            </div>
+          {% endfor %}
         </div>
       </div>
     </div>
-
-    <div class="row g-4">
-      <div class="col-lg-6">
-        <div class="dashboard-card weather-board shadow-xxl h-100">
-          <div class="d-flex align-items-start gap-3 mb-4">
-            <div class="avatar-circle d-flex justify-content-center align-items-center rounded-circle border border-3 border-light" style="width:40px; height:40px; margin-right: 20px;">
-              <span>
-                {% if request.user.first_name and request.user.last_name %}
-                    {{ request.user.first_name|first|upper }}{{ request.user.last_name|first|upper }}
-                {% else %}
-                    {{ request.user.username|slice:":2"|upper }}
-                {% endif %}
-              </span>
-            </div>
-            <div class="flex-grow-1">
-              <h2 class="h4 text-white mb-1">{{ request.user.username }}</h2>
-              <p class="text-muted-80 mb-2">{{ request.user.first_name }} {{ request.user.last_name }}</p>
-              <p class="text-muted-80 mb-2">{{ request.user.email }}</p>
-            </div>
-          </div>
-          <div class="account-info-item">
-            <div class="info-label">Role</div>
-            <div class="info-value">Department Lead</div>
-          </div>
-          <div class="account-info-item">
-            <div class="info-label">Two-factor authentication</div>
-            <div class="info-value">
-              <span class="text-success">Enabled</span>
-              <a href="#" class="link-light text-decoration-none ms-2">Manage</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-6">
-        <div class="dashboard-card weather-board shadow-xxl h-100">
-          <div class="d-flex align-items-center justify-content-between mb-4">
-            <h3 class="h5 text-white mb-0">Location Preferences</h3>
-            <i class="bi bi-geo-fill text-accent fs-4"></i>
-          </div>
-          <div class="account-info-item">
-            <form method="get" class="row g-3">
-              <div class="info-value">{{user_city}}</div>
-              <div class="col-12">
-                <input id="locationInput" type="text" class="form-control-lg w-100" placeholder="Search for your city..." autocomplete="off" name="locationInput"/>
-              </div>
-            </form>
-          </div>
-          <div class="account-info-item">
-            {% for city in cities %}
-              <div class="forecast-card" data-city="{{ city.display_name}}|{{city.lat}}|{{city.lon}}" data-bs-toggle="modal" data-bs-target="#locationModal">
-                {{ city.display_name}}
-              </div>
-            {% endfor %}
-          </div>
-        </div>
-      </div>
-  </section>
+</section>
 
 <!-- Location Modal -->  
 <div class="modal fade" id="locationModal" tabindex="-1" aria-labelledby="locationModalLabel" aria-hidden="true">
@@ -114,22 +114,22 @@
           {% csrf_token %}
 
           <div class="mb-3">
-            <label class="form-label">Username</label>
+            <label class="modal-label">Username</label>
             <input type="text" name="username" class="form-control" value="{{ request.user.username }}">
           </div>
 
           <div class="mb-3">
-            <label class="form-label">Email</label>
+            <label class="modal-label">Email</label>
             <input type="email" name="email" class="form-control" value="{{ request.user.email }}">
           </div>
 
           <div class="mb-3">
-            <label class="form-label">First Name</label>
+            <label class="modal-label">First Name</label>
             <input type="text" name="first_name" class="form-control" value="{{ request.user.first_name }}">
           </div>
 
           <div class="mb-3">
-            <label class="form-label">Last Name</label>
+            <label class="modal-label">Last Name</label>
             <input type="text" name="last_name" class="form-control" value="{{ request.user.last_name }}">
           </div>
 

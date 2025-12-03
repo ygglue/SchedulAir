@@ -50,7 +50,8 @@
     
     <div class="landing-container">
       {% block content %}
-      <div class="container">
+      <!-- Hero Section -->
+      <div class="container hero-section">
         <div class="row justify-content-center">
           <div class="col-12 col-lg-8 text-center">
             <h1 class="display-2 fw-bold text-white mb-4" style="font-family: 'Space Grotesk', serif; line-height: 1.2;">
@@ -65,11 +66,240 @@
           </div>
         </div>
       </div>
+
+      <!-- Features Section -->
+      <section class="features-section py-5 mt-5">
+        <div class="container">
+          <div class="row justify-content-center mb-5">
+            <div class="col-12 col-lg-8 text-center">
+              <h2 class="display-4 fw-bold text-white mb-3">Powerful Features</h2>
+              <p class="lead text-white-50">Everything you need to stay ahead of your schedule and the weather</p>
+            </div>
+          </div>
+          <div class="row g-4">
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="feature-card">
+                <div class="feature-icon">
+                  <i class="bi bi-cloud-sun"></i>
+                </div>
+                <h3 class="h4 text-white mb-3">Real-Time Weather</h3>
+                <p class="text-white-50">Get accurate weather forecasts integrated directly with your schedule. Know what to expect before you step out.</p>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="feature-card">
+                <div class="feature-icon">
+                  <i class="bi bi-calendar-check"></i>
+                </div>
+                <h3 class="h4 text-white mb-3">Smart Scheduling</h3>
+                <p class="text-white-50">Organize your classes, events, and activities with an intuitive interface designed for students and teachers.</p>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="feature-card">
+                <div class="feature-icon">
+                  <i class="bi bi-bell"></i>
+                </div>
+                <h3 class="h4 text-white mb-3">Weather Alerts</h3>
+                <p class="text-white-50">Receive timely notifications about weather changes that might affect your outdoor activities or commute.</p>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="feature-card">
+                <div class="feature-icon">
+                  <i class="bi bi-phone"></i>
+                </div>
+                <h3 class="h4 text-white mb-3">Mobile Responsive</h3>
+                <p class="text-white-50">Access your schedule anywhere, anytime. Fully optimized for mobile, tablet, and desktop devices.</p>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="feature-card">
+                <div class="feature-icon">
+                  <i class="bi bi-pencil-square"></i>
+                </div>
+                <h3 class="h4 text-white mb-3">Easy Editing</h3>
+                <p class="text-white-50">Quickly add, edit, or remove schedule items with our streamlined interface. Changes sync instantly.</p>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="feature-card">
+                <div class="feature-icon">
+                  <i class="bi bi-graph-up"></i>
+                </div>
+                <h3 class="h4 text-white mb-3">Weather Insights</h3>
+                <p class="text-white-50">View detailed weather metrics including temperature, precipitation, wind speed, and more at a glance.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screenshots Carousel Section -->
+      <section class="screenshots-section py-5 mt-5">
+        <div class="container">
+          <div class="row justify-content-center mb-5">
+            <div class="col-12 col-lg-8 text-center">
+              <h2 class="display-4 fw-bold text-white mb-3">See It In Action</h2>
+              <p class="lead text-white-50">Experience the beautiful interface designed for productivity</p>
+            </div>
+          </div>
+          <div class="row justify-content-center">
+            <div class="col-12 col-lg-10">
+              <div class="custom-carousel">
+                <button class="carousel-btn carousel-btn-prev" aria-label="Previous">
+                  <i class="bi bi-chevron-left"></i>
+                </button>
+                <div class="carousel-container">
+                  <!-- Screenshot Item 1 -->
+                  <div class="carousel-item" data-index="0">
+                    <div class="screenshot-card" data-desktop-img="{% static 'img/screenshots/dashboard-desktop.png' %}" data-mobile-img="{% static 'img/screenshots/dashboard-mobile.png' %}">
+                      <div class="screenshot-image-placeholder">
+                        <img src="{% static 'img/screenshots/dashboard-desktop.png' %}" alt="Dashboard View" class="screenshot-preview" onload="this.nextElementSibling.classList.add('hidden');" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                        <div class="screenshot-placeholder hidden">
+                          <i class="bi bi-house-door"></i>
+                          <p class="mt-3 mb-0">Dashboard View</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Screenshot Item 2 -->
+                  <div class="carousel-item" data-index="1">
+                    <div class="screenshot-card" data-desktop-img="{% static 'img/screenshots/editor-desktop.png' %}" data-mobile-img="{% static 'img/screenshots/editor-mobile.png' %}">
+                      <div class="screenshot-image-placeholder">
+                        <img src="{% static 'img/screenshots/editor-desktop.png' %}" alt="Schedule Editor" class="screenshot-preview" onload="this.nextElementSibling.classList.add('hidden');" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                        <div class="screenshot-placeholder hidden">
+                          <i class="bi bi-pencil-square"></i>
+                          <p class="mt-3 mb-0">Schedule Editor</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Screenshot Item 3 -->
+                  <div class="carousel-item" data-index="2">
+                    <div class="screenshot-card" data-desktop-img="{% static 'img/screenshots/weather-desktop.png' %}" data-mobile-img="{% static 'img/screenshots/weather-mobile.png' %}">
+                      <div class="screenshot-image-placeholder">
+                        <img src="{% static 'img/screenshots/weather-desktop.png' %}" alt="Weather Details" class="screenshot-preview" onload="this.nextElementSibling.classList.add('hidden');" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                        <div class="screenshot-placeholder hidden">
+                          <i class="bi bi-cloud-drizzle"></i>
+                          <p class="mt-3 mb-0">Weather Details</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button class="carousel-btn carousel-btn-next" aria-label="Next">
+                  <i class="bi bi-chevron-right"></i>
+                </button>
+                <div class="carousel-controls">
+                  <div class="carousel-indicators">
+                    <button class="indicator active" data-slide="0" aria-label="Slide 1"></button>
+                    <button class="indicator" data-slide="1" aria-label="Slide 2"></button>
+                    <button class="indicator" data-slide="2" aria-label="Slide 3"></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Image Modal -->
+      <div id="imageModal" class="image-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+          <button class="modal-close" aria-label="Close">
+            <i class="bi bi-x-lg"></i>
+          </button>
+          <button class="modal-nav modal-nav-prev" aria-label="Previous Image">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+          <div class="modal-image-container">
+            <img id="modalImage" src="" alt="Screenshot" class="modal-image">
+            <div class="modal-loading">
+              <i class="bi bi-arrow-clockwise"></i>
+            </div>
+          </div>
+          <button class="modal-nav modal-nav-next" aria-label="Next Image">
+            <i class="bi bi-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Footer Section -->
+      <footer class="footer-section py-5 mt-5">
+        <div class="container">
+          <div class="row g-4">
+            <div class="col-12 col-md-6 col-lg-4">
+              <h3 class="h4 text-white mb-4" style="font-family: 'Space Grotesk', serif;">
+                <span class="brand-accent">Schedul</span>Air
+              </h3>
+              <p class="text-white-50 mb-4">
+                Smart scheduling meets weather intelligence. Plan your day with confidence.
+              </p>
+              <div class="social-links">
+                <a href="#" class="social-link" aria-label="Facebook">
+                  <i class="bi bi-facebook"></i>
+                </a>
+                <a href="#" class="social-link" aria-label="Twitter">
+                  <i class="bi bi-twitter"></i>
+                </a>
+                <a href="#" class="social-link" aria-label="Instagram">
+                  <i class="bi bi-instagram"></i>
+                </a>
+                <a href="#" class="social-link" aria-label="GitHub">
+                  <i class="bi bi-github"></i>
+                </a>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+              <h4 class="h5 text-white mb-4">Quick Links</h4>
+              <ul class="footer-links">
+                <li><a href="{% url 'account_login' %}">Login</a></li>
+                <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+              </ul>
+            </div>
+            <div class="col-12 col-md-12 col-lg-4">
+              <h4 class="h5 text-white mb-4">Contact Us</h4>
+              <ul class="contact-list">
+                <li>
+                  <i class="bi bi-envelope"></i>
+                  <a href="mailto:support@schedulair.com">support@schedulair.com</a>
+                </li>
+                <li>
+                  <i class="bi bi-telephone"></i>
+                  <a href="tel:+1234567890">+1 (234) 567-890</a>
+                </li>
+                <li>
+                  <i class="bi bi-geo-alt"></i>
+                  <span>123 Weather Street, Cloud City, CC 12345</span>
+                </li>
+                <li>
+                  <i class="bi bi-clock"></i>
+                  <span>Mon - Fri: 9:00 AM - 5:00 PM</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <hr class="footer-divider my-4">
+          <div class="row">
+            <div class="col-12 text-center">
+              <p class="text-white-50 mb-0">
+                &copy; 2024 SchedulAir. All rights reserved. Made with <i class="bi bi-heart-fill text-danger"></i> for better scheduling.
+              </p>
+            </div>
+          </div>
+        </div>
+      </footer>
       {% endblock %}
     </div>
 
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'js/scripts.js' %}"></script>
+    <script src="{% static 'js/carousel.js' %}"></script>
     {% block extra_scripts %}{% endblock %}
   </body>
 </html>

@@ -101,8 +101,9 @@ def get_weather_codes_lookup():
         print(f"ERROR: JSON file is malformed or empty.")
         return {}
     
-def get_icon_url(current_day:int, weather_code:list[int], is_day:bool = True):
+def get_icon_data(current_day:int, weather_code:list[int], is_day:bool = True):
     days_icons = []
+    days_description = []
 
     get_weather_codes_lookup
     code_data = get_weather_codes_lookup()
@@ -110,12 +111,17 @@ def get_icon_url(current_day:int, weather_code:list[int], is_day:bool = True):
     for i in range(7):
         if i <= current_day:
             days_icons.append('')
+            days_description.append('')
         else:
             if is_day:
                 days_icons.append(code_data.get(str(weather_code[i-current_day])).get('day').get('image'))
+                days_description.append(code_data.get(str(weather_code[i-current_day])).get('day').get('description'))
             else:
+                days_description.append(code_data.get(str(weather_code[i-current_day])).get('day').get('description'))
                 days_icons.append(code_data.get(str(weather_code[i-current_day])).get('night').get('image'))
+    
+    data = [days_icons, days_description]
 
-    return days_icons
+    return data
 
             
