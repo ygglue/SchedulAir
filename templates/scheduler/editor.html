@@ -306,19 +306,19 @@ Schedule Editor
             <label for="subjectSelect" class="modal-label">Subject</label>
             <select class="form-select" id="subjectSelect" name="subjectSelect" required>
             {% if subjects %}
-              <option id="choose-option" selected>Choose...</option>
+              <option value="" selected>Choose...</option>
               {% for subject in subjects %}
                 <option value="{{subject.id}}">{{subject.name}}</option>
               {% endfor %}
             {% else %}
-              <option class="modal-empty-message" id="empty-message">No Subjects added yet...</option>
+              <option value="">No Subjects added yet...</option>
             {% endif %}
             </select>
           </div>
           <div class="col-md-6">
             <label for="classDay" class="modal-label">Day</label>
             <select class="form-select" id="classDay" name="classDay" required>
-              <option value="" selected>Choose...</option>
+              <option value="" selected hidden>Choose...</option>
               <option value="SUN">Sunday</option>
               <option value="MON">Monday</option>
               <option value="TUE">Tuesday</option>

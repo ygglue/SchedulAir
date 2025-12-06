@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 # for extending User, ex: I added a new field for the users location to be used for openweather
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    city = models.TextField(max_length=20, blank=True, default=", The user hasn't set their location yet.|||")
+    city = models.TextField(max_length=20, blank=True, default=", |||")
 
     def __str__(self):
         return f"{self.user.username}'s Profile"
