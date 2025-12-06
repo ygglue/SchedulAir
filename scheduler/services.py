@@ -14,42 +14,49 @@ PROJECT_ROOT = CURRENT_APP_DIR.parent
 
 JSON_FILE_PATH = PROJECT_ROOT / 'static' / 'json' / 'weather_code.json'
 
-def get_weather_forecast(latitude, longitude):
+def get_weather_forecast(city):
     print('getting weather data')
 
-    cache_key = f'weather_forecast_{latitude}_{longitude}'
-    CACHE_TIMEOUT_SECONDS = get_seconds_until_midnight()
+    latitude = city[1] 
+    longitude = city[2]
+    if latitude and longitude:
+        cache_key = f'weather_forecast_{latitude}_{longitude}'
+        CACHE_TIMEOUT_SECONDS = get_seconds_until_midnight()
 
-    cached_data = cache.get(cache_key)
-    if cached_data:
-        print(f'✓ Using cached data (cache expires at midnight)')
-        return cached_data
-    
-    print(f'✗ No cached data found - fetching from API')
+        cached_data = cache.get(cache_key)
+        if cached_data:
+            print(f'✓ Using cached data (cache expires at midnight)')
+            return cached_data
+        
+        print(f'✗ No cached data found - fetching from API')
 
-    params = {
-        'latitude': latitude,
-        'longitude': longitude,
-        'daily': 'weather_code,precipitation_sum,temperature_2m_max,temperature_2m_min',
-        'hourly': 'temperature_2m,relative_humidity_2m,weather_code,apparent_temperature,dew_point_2m,precipitation_probability,wind_speed_10m',
-        'timezone': 'auto',
-        'timeformat': 'unixtime',
-        'temperature_unit': 'celsius'
-    }
+        params = {
+            'latitude': latitude,
+            'longitude': longitude,
+            'daily': 'weather_code,precipitation_sum,temperature_2m_max,temperature_2m_min',
+            'hourly': 'temperature_2m,relative_humidity_2m,weather_code,apparent_temperature,dew_point_2m,precipitation_probability,wind_speed_10m',
+            'timezone': 'auto',
+            'timeformat': 'unixtime',
+            'temperature_unit': 'celsius'
+        }
 
-    try:
-        response = requests.get(OPEN_METEO_URL, params=params, timeout=5)
-        response.raise_for_status()
-        data = response.json()
+        try:
+            response = requests.get(OPEN_METEO_URL, params=params, timeout=5)
+            response.raise_for_status()
+            data = response.json()
 
-        cache.set(cache_key, data, CACHE_TIMEOUT_SECONDS)
-        midnight = datetime.now() + timedelta(seconds=CACHE_TIMEOUT_SECONDS)
-        print(f'✓ Data cached until {midnight.strftime("%Y-%m-%d %H:%M:%S")}')
+            cache.set(cache_key, data, CACHE_TIMEOUT_SECONDS)
+            midnight = datetime.now() + timedelta(seconds=CACHE_TIMEOUT_SECONDS)
+            print(f'✓ Data cached until {midnight.strftime("%Y-%m-%d %H:%M:%S")}')
+            return data
+
+        except requests.exceptions.RequestException as e:
+            print(f'API Request Error: {e}')
+            return None
+    else:
+        with open(PROJECT_ROOT / 'static' / 'json' / 'example_weather_data.json', 'r', encoding='utf-8') as f:
+            data = json.load(f)
         return data
-
-    except requests.exceptions.RequestException as e:
-        print(f'API Request Error: {e}')
-        return None
     
 def get_seconds_until_midnight():
     """Calculates the seconds remaining until the end of the current day."""
@@ -105,7 +112,6 @@ def get_icon_data(current_day:int, weather_code:list[int], is_day:bool = True):
     days_icons = []
     days_description = []
 
-    get_weather_codes_lookup
     code_data = get_weather_codes_lookup()
 
     for i in range(7):

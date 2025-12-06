@@ -18,7 +18,7 @@ def home(request):
     current_hour = int(now.strftime('%I').lstrip('0'))
     current_day_abbr_caps = datetime.now().strftime("%a").upper()
     is_day = 6 <= current_hour < 18
-    weather_data = get_weather_forecast(user_city[1], user_city[2])
+    weather_data = get_weather_forecast(user_city)
 
     #hourly
     windspeed = weather_data.get('hourly').get('wind_speed_10m')[current_hour]
@@ -79,7 +79,7 @@ def account(request):
     cities = []
     user_profile = request.user.profile
     
-    user_city = user_profile.city.split('|', 1)[0] or 'You have not selected you city yet...'
+    user_city = user_profile.city.split('|', 1)[0] if user_profile.city.split('|', 1)[0] != ', ' else 'Select your city to get real-time and accurate weather data...'
 
     if request.method == 'POST':
         if 'locationData' in request.POST:
@@ -137,7 +137,7 @@ def editor(request):
     current_hour = int(now.strftime('%I').lstrip('0'))
     current_day = int(datetime.now().weekday())
     is_day = 6 <= current_hour < 18
-    weather_data = get_weather_forecast(user_city[1], user_city[2])
+    weather_data = get_weather_forecast(user_city)
     weather_code = weather_data['daily'].get('weather_code')
     weather_icon_data=get_icon_data(current_day=current_day, weather_code=weather_code, is_day=is_day)
 

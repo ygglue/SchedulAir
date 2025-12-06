@@ -27,8 +27,7 @@ load_dotenv()
 SECRET_KEY = 'django-insecure-x6s%#_b_a@yt)bmg#-$%-ihp1)x=@7z$ays!ffeegex@ma8k%n'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
+DEBUG = os.getenv('DEBUG_STATUS', 'true').lower() == 'true'
 ALLOWED_HOSTS = ['schedulair.pythonanywhere.com', '127.0.0.1']
 
 if "pythonanywhere" in socket.gethostname():
