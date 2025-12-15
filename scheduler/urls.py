@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 urlpatterns = [
@@ -7,5 +7,5 @@ urlpatterns = [
     path('account/', views.account, name='account'),
     path('home/', views.home, name='home'),
     path("account/edit/", views.edit_profile_ajax, name="edit_profile_ajax"),
-
+    path('', include('pwa.urls')),
 ]
